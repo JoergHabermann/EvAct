@@ -1,1 +1,61 @@
-<p>mainpage works!</p>
+<header></header>
+
+<main>
+  <mat-card appearance="raised">
+    <mat-card-content>
+      <form [formGroup]="dataForm">
+        <h1>EvAct Suche</h1>
+
+        <mat-form-field>
+          <mat-label>Typ</mat-label>
+          <mat-select formControlName="selectControl">
+            <mat-option value="Restaurant">Restaurant</mat-option>
+            <mat-option value="NoRestaurant">NoRestaurant</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="range-wrapper">
+          <mat-label>Umkreis: </mat-label>
+          <mat-slider
+            min="0"
+            max="150"
+            step="1"
+            showTickMarks
+            discrete
+            [displayWith]="formatLabel"            
+          >
+            <input matSliderThumb formControlName="rangeValue"/>
+          </mat-slider>
+        </div>
+
+        
+          <mat-form-field>
+            <mat-label>Datumsbereich</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input
+                matStartDate
+                formControlName="start"
+                placeholder="Start date"
+              />
+              <input matEndDate formControlName="end" placeholder="End date" />
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+        
+
+        <div class="example-button-container">
+          <button mat-fab extended (click)="logData()">
+            <mat-icon>search</mat-icon>
+            Suchen
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</main>

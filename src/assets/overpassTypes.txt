@@ -1,0 +1,63 @@
+🍽️ Essen & Trinken (amenity)
+Diese Tags gehören zur Kategorie Restaurants, Cafés und Bars:
+
+restaurant → Restaurant
+fast_food → Schnellrestaurant (z. B. McDonald's, Dönerladen)
+cafe → Café
+bar → Bar
+pub → Kneipe / Gaststätte
+biergarten → Biergarten
+food_court → Food Court in Einkaufszentren
+ice_cream → Eisdiele
+bbq → Grillplatz
+vending_machine → Verkaufsautomat (Snacks, Getränke)
+⚽ Freizeit & Sport (leisure & sport)
+Diese Tags gehören zu Sportanlagen, Parks und Aktivitäten:
+
+🎾 Sporteinrichtungen (leisure & sport)
+sports_centre → Sportzentrum / Mehrzweckhalle
+stadium → Stadion
+sports_hall → Sporthalle
+fitness_centre → Fitnessstudio
+swimming_pool → Schwimmbad
+water_park → Wasserpark
+golf_course → Golfplatz
+pitch → Sportplatz (z. B. Fußballplatz)
+track → Laufbahn / Rennstrecke
+climbing → Kletterhalle / Kletterpark
+skatepark → Skatepark
+tennis_court → Tennisplatz
+basketball → Basketballplatz
+volleyball → Volleyballplatz
+table_tennis → Tischtennisplatte
+horse_riding → Reiten
+🏞️ Outdoor & Erholung (leisure)
+park → Park / Stadtpark
+garden → Botanischer Garten
+dog_park → Hundepark
+playground → Spielplatz
+nature_reserve → Naturschutzgebiet
+beach_resort → Strandresort
+marina → Hafen für Boote
+🎭 Andere Freizeitaktivitäten (tourism, amenity, leisure)
+Diese Orte sind für Freizeit, Kultur & Unterhaltung geeignet:
+
+🎬 Unterhaltung & Kultur
+cinema → Kino
+theatre → Theater
+museum → Museum
+gallery → Kunstgalerie
+music_venue → Konzerthalle
+nightclub → Nachtclub / Disco
+casino → Casino
+🎢 Freizeitparks & Attraktionen
+theme_park → Freizeitpark (z. B. Europapark)
+zoo → Zoo
+aquarium → Aquarium
+amusement_arcade → Spielhalle
+🏕️ Outdoor & Abenteuer
+camp_site → Campingplatz
+caravan_site → Wohnmobilstellplatz
+picnic_site → Picknickplatz
+viewpoint → Aussichtspunkt
+hiking → Wanderweg
