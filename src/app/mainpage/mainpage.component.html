@@ -9,8 +9,10 @@
         <mat-form-field>
           <mat-label>Typ</mat-label>
           <mat-select formControlName="selectControl">
-            <mat-option value="Restaurant">Restaurant</mat-option>
-            <mat-option value="NoRestaurant">NoRestaurant</mat-option>
+            <mat-option value="theatre">Kino</mat-option>
+            <mat-option value="casino">Casino</mat-option>
+            <mat-option value="swimming_pool">Schwimmbad</mat-option>
+            <mat-option value="park">Park</mat-option>            
           </mat-select>
         </mat-form-field>
 
@@ -57,5 +59,14 @@
 
       </form>
     </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="data-result-wrapper" *ngIf="locationData">
+    <mat-card appearance="raised" class="data-result-card" *ngFor="let date of locationData">
+      {{this.haversineDistance(52.0499998, 10.3666652, date.lat, date.lon) + ' km'}}      
+      <mat-card appearance="raised" *ngFor="let tag of date.tags | keyvalue">
+        {{tag.value}}
+      </mat-card>
+    </mat-card>    
   </mat-card>
 </main>

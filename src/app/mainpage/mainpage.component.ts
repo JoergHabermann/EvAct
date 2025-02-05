@@ -10,6 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatButtonModule} from '@angular/material/button';
 import { MatIconModule} from '@angular/material/icon';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-mainpage',
@@ -24,7 +25,10 @@ import { MatIconModule} from '@angular/material/icon';
     FormsModule, ReactiveFormsModule,
     MatNativeDateModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    NgIf,
+    NgFor,
+    CommonModule
   ],
   templateUrl: './mainpage.component.html',
   styleUrl: './mainpage.component.scss',
@@ -36,18 +40,17 @@ export class MainpageComponent {
     rangeValue: new FormControl(0),
     start: new FormControl(),
     end: new FormControl(),
-    selectControl: new FormControl('school')  
+    selectControl: new FormControl('cinema')  
   });
 
-  locationData : any;
+  locationData : any = '';
   
   constructor(){}  
 
-  async fetchData(range : number, type : string) {
-    
+  async fetchData(latitude : number | null, longitude : number | null, range : number, type : string) {    
     const query = `
       [out:json];(
-        node["leisure"="fitness_centre"](around:20000,52.0499998, 10.3666652);        
+        node["amenity"="${type}"](around:${range * 1000},52.0499998, 10.3666652);        
       );
       out body qt;
       out tags;
@@ -55,7 +58,6 @@ export class MainpageComponent {
     const URL = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`);
     const URLtoJSON = await URL.json(); 
     this.locationData = URLtoJSON.elements;
-
   }
 
   logDates() {
@@ -71,15 +73,35 @@ export class MainpageComponent {
     this.logDates();
     console.log(range);
     console.log(type);    
-    await this.fetchData(range,type);
-    console.log(this.locationData);
-    
+    await this.fetchData(null,null,range,type);
+    console.log(this.locationData);    
   }
-
-  
-
 
   formatLabel(value: number): string {
     return value + 'km';
+  }
+
+  toRadians(degrees: number): number {
+    return degrees * (Math.PI / 180);
+  }
+
+  haversineDistance(
+    lat1: number, lon1: number,
+    lat2: number, lon2: number,  
+  ): string {
+    const radius: number = 6371 
+    const theta1 = this.toRadians(lat1);
+    const theta2 = this.toRadians(lat2);
+    const deltaTheta = this.toRadians(lat2 - lat1);
+    const deltaPhi = this.toRadians(lon2 - lon1);
+  
+    const a =
+      Math.sin(deltaTheta / 2) * Math.sin(deltaTheta / 2) +
+      Math.cos(theta1) * Math.cos(theta2) *
+      Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2);
+  
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  
+    return (radius * c).toFixed(2);
   }
 }
