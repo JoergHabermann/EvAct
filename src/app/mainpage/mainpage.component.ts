@@ -11,6 +11,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { MatButtonModule} from '@angular/material/button';
 import { MatIconModule} from '@angular/material/icon';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { Node } from '../models/node.model';
 
 @Component({
   selector: 'app-mainpage',
@@ -56,8 +57,27 @@ export class MainpageComponent {
       out tags;
     `;
     const URL = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`);
-    const URLtoJSON = await URL.json(); 
-    this.locationData = URLtoJSON.elements;
+    const URLtoJSON = await URL.json();     
+    const redundantObject = URLtoJSON.elements;
+    this.locationData = this.deleteRedundantObjects(redundantObject);
+    this.addLocationDistance(52.0499998, 10.3666652,this.locationData);
+    this.sortLocations(this.locationData);
+  }
+
+  deleteRedundantObjects(object : Object[]) {
+    const halfLength = object.length / 2;
+    return object.slice(0,halfLength - 1);
+  }
+
+  addLocationDistance(latitude : number, longitude : number, object : Node[]) {
+    for (let location of object) {
+      const distance = this.haversineDistance(latitude,longitude,location.lat,location.lon);
+      location.distance = +distance;
+    }
+  }
+
+  sortLocations(object : Node[]) {
+    object.sort((a, b) => (a.distance < b.distance ? -1 : 1))
   }
 
   logDates() {
@@ -73,7 +93,7 @@ export class MainpageComponent {
     this.logDates();
     console.log(range);
     console.log(type);    
-    await this.fetchData(null,null,range,type);
+    await this.fetchData(null,null,range,type);    
     console.log(this.locationData);    
   }
 
