@@ -5,6 +5,10 @@
     <mat-card-content>
       <form [formGroup]="dataForm">
         <h1>EvAct Suche</h1>
+        
+        <h2>Deine Position:</h2>
+        <div><img class="position-small" src="./assets/img/posi.png" alt="location">{{ this.userCity }}</div>
+
 
         <mat-form-field>
           <mat-label>Typ</mat-label>

@@ -12,6 +12,8 @@ import { MatButtonModule} from '@angular/material/button';
 import { MatIconModule} from '@angular/material/icon';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { Node } from '../models/node.model';
+import { OnInit } from '@angular/core';
+import { GeoInformationService } from '../services/geo-information.service';
 
 @Component({
   selector: 'app-mainpage',
@@ -29,13 +31,16 @@ import { Node } from '../models/node.model';
     MatIconModule,
     NgIf,
     NgFor,
-    CommonModule
+    CommonModule    
   ],
   templateUrl: './mainpage.component.html',
   styleUrl: './mainpage.component.scss',
 })
-export class MainpageComponent {
+export class MainpageComponent implements OnInit {
   searchType : string = '';
+  userLatitude : number = 0;
+  userLongitude : number = 0;
+  userCity : any;
 
   dataForm = new FormGroup({
     rangeValue: new FormControl(0),
@@ -46,9 +51,30 @@ export class MainpageComponent {
 
   locationData : any = '';
   
-  constructor(){}  
+  constructor(private geoService: GeoInformationService){} 
+  
+  ngOnInit() {    
+    this.getLocation();
+    this.userCity = this.geoService.getAddress(this.userLatitude,this.userLongitude);
+  }
 
-  async fetchData(latitude : number | null, longitude : number | null, range : number, type : string) {    
+  getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position)=>{
+          this.userLongitude = position.coords.longitude;
+          this.userLatitude = position.coords.latitude;
+          console.log("latitude: " + this.userLatitude, "longitude " + this.userLongitude);
+        });
+    } else {
+       console.log("No support for geolocation")
+    }
+  }
+
+
+
+  
+
+  async fetchData(latitude : number, longitude : number, range : number, type : string) {    
     const query = `
       [out:json];(
         node["amenity"="${type}"](around:${range * 1000},52.0499998, 10.3666652);        
@@ -93,7 +119,7 @@ export class MainpageComponent {
     this.logDates();
     console.log(range);
     console.log(type);    
-    await this.fetchData(null,null,range,type);    
+    await this.fetchData(this.userLatitude,this.userLongitude,range,type);    
     console.log(this.locationData);    
   }
 
