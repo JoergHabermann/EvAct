@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -7,10 +6,11 @@ import { HttpClient } from '@angular/common/http';
 export class GeoInformationService {
   private nominatimUrl = 'https://nominatim.openstreetmap.org/reverse?format=json';
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
-  getAddress(lat: number, lon: number) {
-    const url = `${this.nominatimUrl}&lat=${lat}&lon=${lon}`;
-    return this.http.get(url);
+  async getAddress(lat: number, lon: number) {
+    const URL = await fetch(`${this.nominatimUrl}&lat=${lat}&lon=${lon}`);
+    const URLtoJSON = URL.json();
+    return URLtoJSON;
   }
 }

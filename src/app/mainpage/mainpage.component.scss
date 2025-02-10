@@ -12,6 +12,19 @@ mat-card {
   padding: 20px;
 }
 
+mat-slider {
+  width: 60%;
+}
+
+.center {
+  @include flexParams();
+  >img {
+    margin-right: 16px;
+  }
+}
+
+
+
 form {
   @include flexParams($direction:column);
   gap: 16px;
@@ -21,10 +34,6 @@ h1 {
   font-size: 32px;
   text-decoration: underline;
   font-weight: bold;
-}
-
-mat-slider {
-  width: 60%;
 }
 
 .range-wrapper {

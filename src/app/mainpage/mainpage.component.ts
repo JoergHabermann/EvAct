@@ -53,25 +53,35 @@ export class MainpageComponent implements OnInit {
   
   constructor(private geoService: GeoInformationService){} 
   
-  ngOnInit() {    
-    this.getLocation();
-    this.userCity = this.geoService.getAddress(this.userLatitude,this.userLongitude);
+  async ngOnInit() {    
+    await this.getLocation();    
+    this.userCity = await this.geoService.getAddress(this.userLatitude,this.userLongitude);
+    console.log(this.userCity);
   }
 
-  getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position)=>{
-          this.userLongitude = position.coords.longitude;
-          this.userLatitude = position.coords.latitude;
-          console.log("latitude: " + this.userLatitude, "longitude " + this.userLongitude);
-        });
-    } else {
-       console.log("No support for geolocation")
-    }
+  getLocation(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            this.userLatitude = position.coords.latitude;
+            this.userLongitude = position.coords.longitude;
+            console.log("latitude: " + this.userLatitude, "longitude " + this.userLongitude);
+            resolve();
+          },
+          (error) => {
+            console.error('Fehler bei der Geolokalisierung:', error);
+            reject(error);
+          }
+        );
+      } else {
+        reject('Geolokalisierung wird nicht unterstützt.');
+      }
+    });
   }
 
 
-
+  
   
 
   async fetchData(latitude : number, longitude : number, range : number, type : string) {    
