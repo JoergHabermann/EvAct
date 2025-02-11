@@ -43,10 +43,10 @@ export class MainpageComponent implements OnInit {
   userCity : any;
 
   dataForm = new FormGroup({
-    rangeValue: new FormControl(0),
+    rangeValue: new FormControl(25),
     start: new FormControl(),
     end: new FormControl(),
-    selectControl: new FormControl('cinema')  
+    selectControl: new FormControl('casino')  
   });
 
   locationData : any = '';
@@ -78,16 +78,13 @@ export class MainpageComponent implements OnInit {
         reject('Geolokalisierung wird nicht unterstützt.');
       }
     });
-  }
-
-
-  
+  }  
   
 
   async fetchData(latitude : number, longitude : number, range : number, type : string) {    
     const query = `
       [out:json];(
-        node["amenity"="${type}"](around:${range * 1000},52.0499998, 10.3666652);        
+        node["amenity"="${type}"](around:${range * 1000},${latitude}, ${longitude});        
       );
       out body qt;
       out tags;
@@ -96,9 +93,22 @@ export class MainpageComponent implements OnInit {
     const URLtoJSON = await URL.json();     
     const redundantObject = URLtoJSON.elements;
     this.locationData = this.deleteRedundantObjects(redundantObject);
-    this.addLocationDistance(52.0499998, 10.3666652,this.locationData);
+    this.addLocationDistance(latitude, longitude,this.locationData);
     this.sortLocations(this.locationData);
   }
+
+  async pushNominatim() {
+    this.locationData.forEach(async (node:Node) => {
+      const nodeNominatimObject = await this.geoService.getAddress(node.lat,node.lon);
+      const mapElements = ["road","house_number","postcode","town","suburb"];
+      mapElements.forEach((element : string) => {
+        if (element in nodeNominatimObject.address) {
+          node[element] = nodeNominatimObject.address[element];
+        }
+      });
+      await new Promise(resolve => setTimeout(resolve, 500));
+    });
+  }  
 
   deleteRedundantObjects(object : Object[]) {
     const halfLength = object.length / 2;
@@ -129,7 +139,8 @@ export class MainpageComponent implements OnInit {
     this.logDates();
     console.log(range);
     console.log(type);    
-    await this.fetchData(this.userLatitude,this.userLongitude,range,type);    
+    await this.fetchData(this.userLatitude,this.userLongitude,range,type);  
+    await this.pushNominatim();  
     console.log(this.locationData);    
   }
 

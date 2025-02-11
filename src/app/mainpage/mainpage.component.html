@@ -12,7 +12,7 @@
 
 
         <mat-form-field>
-          <mat-label>Typ</mat-label>
+          <mat-label>Casino</mat-label>
           <mat-select formControlName="selectControl">
             <mat-option value="theatre">Kino</mat-option>
             <mat-option value="casino">Casino</mat-option>
@@ -68,10 +68,7 @@
 
   <mat-card appearance="raised" class="data-result-wrapper" *ngIf="locationData">
     <mat-card appearance="raised" class="data-result-card" *ngFor="let date of locationData">
-       {{date.distance + ' km'}}    
-      <mat-card appearance="raised" *ngFor="let tag of date.tags | keyvalue">
-        {{tag.value}}
-      </mat-card>
+       {{'Entfernung: ' + date.distance + ' km '}}{{date.tags.name}}     
     </mat-card>    
   </mat-card>
 </main>
