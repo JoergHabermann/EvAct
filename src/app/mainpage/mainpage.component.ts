@@ -41,6 +41,7 @@ export class MainpageComponent implements OnInit {
   userLatitude : number = 0;
   userLongitude : number = 0;
   userCity : any;
+  category : string = '';
 
   dataForm = new FormGroup({
     rangeValue: new FormControl(25),
@@ -92,25 +93,28 @@ export class MainpageComponent implements OnInit {
     const URL = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`);
     const URLtoJSON = await URL.json();     
     const redundantObject = URLtoJSON.elements;
-    this.locationData = this.deleteRedundantObjects(redundantObject);
+    this.locationData = this.deleteRedundantNodes(redundantObject);
     this.addLocationDistance(latitude, longitude,this.locationData);
     this.sortLocations(this.locationData);
   }
 
   async pushNominatim() {
-    this.locationData.forEach(async (node:Node) => {
-      const nodeNominatimObject = await this.geoService.getAddress(node.lat,node.lon);
-      const mapElements = ["road","house_number","postcode","town","suburb"];
-      mapElements.forEach((element : string) => {
-        if (element in nodeNominatimObject.address) {
-          node[element] = nodeNominatimObject.address[element];
-        }
-      });
-      await new Promise(resolve => setTimeout(resolve, 500));
-    });
+    for (const node of this.locationData) {
+      try {
+        const nodeNominatimObject = await this.geoService.getAddress(node.lat, node.lon);
+        const mapElements = ["road", "house_number", "postcode", "town", "suburb"];        
+        for (const element of mapElements) {
+          if (element in nodeNominatimObject.address) {
+            node[element] = nodeNominatimObject.address[element];
+          }
+        }      
+      } catch (error) {
+        console.error('Fehler bei der Anfrage für Node:', node, error);
+      }
+    }
   }  
 
-  deleteRedundantObjects(object : Object[]) {
+  deleteRedundantNodes(object : Object[]) {
     const halfLength = object.length / 2;
     return object.slice(0,halfLength - 1);
   }
@@ -135,11 +139,11 @@ export class MainpageComponent implements OnInit {
 
   async logData() {
     const range : number = this.dataForm.get('rangeValue')!.value!;
-    const type : string = this.dataForm.get('selectControl')!.value!;
+    this.category = this.dataForm.get('selectControl')!.value!;
     this.logDates();
     console.log(range);
-    console.log(type);    
-    await this.fetchData(this.userLatitude,this.userLongitude,range,type);  
+    console.log(this.category);    
+    await this.fetchData(this.userLatitude,this.userLongitude,range,this.category);  
     await this.pushNominatim();  
     console.log(this.locationData);    
   }

@@ -67,8 +67,11 @@
   </mat-card>
 
   <mat-card appearance="raised" class="data-result-wrapper" *ngIf="locationData">
-    <mat-card appearance="raised" class="data-result-card" *ngFor="let date of locationData">
-       {{'Entfernung: ' + date.distance + ' km '}}{{date.tags.name}}     
+    <mat-card class="node-card" appearance="raised" class="data-result-card" *ngFor="let date of locationData">
+       {{'Entfernung: ' + date.distance + ' km '}}
+       {{date.tags.name ? date.tags.name : this.category}} 
+       {{date.road}}{{' '}}{{date.house_number}}  
+       {{date.postcode}}{{' '}}{{date.town}}{{' '}}{{date.suburb}}  
     </mat-card>    
   </mat-card>
 </main>
