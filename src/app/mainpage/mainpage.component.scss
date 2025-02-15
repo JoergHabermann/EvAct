@@ -23,11 +23,14 @@ mat-slider {
   }
 }
 
-.node-card {
-  gap: 8px;
+.wide {
+  width: 100%;
 }
 
-
+.node-card {
+  @include flexParams($align: center,$justify: space-between,$direction: row);
+  
+}
 
 form {
   @include flexParams($direction:column);

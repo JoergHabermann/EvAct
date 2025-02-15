@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -14,6 +14,7 @@ import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { Node } from '../models/node.model';
 import { OnInit } from '@angular/core';
 import { GeoInformationService } from '../services/geo-information.service';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-mainpage',
@@ -31,12 +32,15 @@ import { GeoInformationService } from '../services/geo-information.service';
     MatIconModule,
     NgIf,
     NgFor,
-    CommonModule    
+    CommonModule,
+    MatExpansionModule
   ],
   templateUrl: './mainpage.component.html',
   styleUrl: './mainpage.component.scss',
 })
 export class MainpageComponent implements OnInit {
+  readonly panelOpenState = signal(false);
+
   searchType : string = '';
   userLatitude : number = 0;
   userLongitude : number = 0;
@@ -53,7 +57,7 @@ export class MainpageComponent implements OnInit {
   locationData : any = '';
   
   constructor(private geoService: GeoInformationService){} 
-  
+
   async ngOnInit() {    
     await this.getLocation();    
     this.userCity = await this.geoService.getAddress(this.userLatitude,this.userLongitude);
@@ -98,21 +102,18 @@ export class MainpageComponent implements OnInit {
     this.sortLocations(this.locationData);
   }
 
-  async pushNominatim() {
-    for (const node of this.locationData) {
-      try {
-        const nodeNominatimObject = await this.geoService.getAddress(node.lat, node.lon);
-        const mapElements = ["road", "house_number", "postcode", "town", "suburb"];        
-        for (const element of mapElements) {
-          if (element in nodeNominatimObject.address) {
-            node[element] = nodeNominatimObject.address[element];
-          }
-        }      
-      } catch (error) {
-        console.error('Fehler bei der Anfrage für Node:', node, error);
-      }
-    }
-  }  
+  async pushNominatim(node : Node) {      
+    const mapElements = ["road", "house_number", "postcode", "town", "suburb"];
+    if (!node.hasOwnProperty("road")) {
+      const nodeNominatimObject = await this.geoService.getAddress(node.lat, node.lon);            
+      for (const element of mapElements) {
+        if (element in nodeNominatimObject.address) {
+          node[element] = nodeNominatimObject.address[element];
+        }
+      }   
+    }  
+  }
+    
 
   deleteRedundantNodes(object : Object[]) {
     const halfLength = object.length / 2;
@@ -144,7 +145,7 @@ export class MainpageComponent implements OnInit {
     console.log(range);
     console.log(this.category);    
     await this.fetchData(this.userLatitude,this.userLongitude,range,this.category);  
-    await this.pushNominatim();  
+    /* await this.pushNominatim();  */ 
     console.log(this.locationData);    
   }
 

@@ -7,3 +7,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     justify-content: $justify;
     flex-direction: $direction;
   }
+
+$prime-color : #673AB7;
+
+
+.prime-color {
+  color: $prime-color;
+}
