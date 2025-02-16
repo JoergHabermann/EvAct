@@ -14,3 +14,8 @@ $prime-color : #673AB7;
 .prime-color {
   color: $prime-color;
 }
+
+.flex {
+  @include flexParams();
+}
+

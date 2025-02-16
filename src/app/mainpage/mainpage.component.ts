@@ -14,7 +14,8 @@ import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { Node } from '../models/node.model';
 import { OnInit } from '@angular/core';
 import { GeoInformationService } from '../services/geo-information.service';
-import {MatExpansionModule} from '@angular/material/expansion';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MapComponent } from '../components/map/map.component';
 
 @Component({
   selector: 'app-mainpage',
@@ -33,7 +34,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     NgIf,
     NgFor,
     CommonModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MapComponent
   ],
   templateUrl: './mainpage.component.html',
   styleUrl: './mainpage.component.scss',
