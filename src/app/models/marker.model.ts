@@ -1,0 +1,6 @@
+export interface Marker {
+  latitude: number;
+  longitude: number;
+  popupText: string;
+  color: string;
+}

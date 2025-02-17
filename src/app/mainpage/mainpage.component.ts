@@ -12,10 +12,12 @@ import { MatButtonModule} from '@angular/material/button';
 import { MatIconModule} from '@angular/material/icon';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { Node } from '../models/node.model';
+import { Marker } from '../models/marker.model';
 import { OnInit } from '@angular/core';
 import { GeoInformationService } from '../services/geo-information.service';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MapComponent } from '../components/map/map.component';
+
 
 @Component({
   selector: 'app-mainpage',
@@ -42,12 +44,14 @@ import { MapComponent } from '../components/map/map.component';
 })
 export class MainpageComponent implements OnInit {
   readonly panelOpenState = signal(false);
+  
 
   searchType : string = '';
   userLatitude : number = 0;
   userLongitude : number = 0;
   userCity : any;
   category : string = '';
+  mapMarkers : Marker[] = [];
 
   dataForm = new FormGroup({
     rangeValue: new FormControl(25),
@@ -63,7 +67,7 @@ export class MainpageComponent implements OnInit {
   async ngOnInit() {    
     await this.getLocation();    
     this.userCity = await this.geoService.getAddress(this.userLatitude,this.userLongitude);
-    console.log(this.userCity);
+    console.log(this.userCity);    
   }
 
   getLocation(): Promise<void> {
@@ -115,6 +119,20 @@ export class MainpageComponent implements OnInit {
       }   
     }  
   }
+
+  pushMarkers() {     
+    for (const node of this.locationData) {
+      const node_marker : Marker = {
+        latitude : node.lat,
+        longitude : node.lon,
+        popupText : node.lat,
+        color : 'green'
+      }
+      this.mapMarkers.push(node_marker);
+    }    
+    this.mapMarkers = [...this.mapMarkers];  
+  }
+  
     
 
   deleteRedundantNodes(object : Object[]) {
@@ -146,9 +164,9 @@ export class MainpageComponent implements OnInit {
     this.logDates();
     console.log(range);
     console.log(this.category);    
-    await this.fetchData(this.userLatitude,this.userLongitude,range,this.category);  
-    /* await this.pushNominatim();  */ 
-    console.log(this.locationData);    
+    await this.fetchData(this.userLatitude,this.userLongitude,range,this.category);     
+    console.log(this.locationData);  
+    this.pushMarkers();  
   }
 
   formatLabel(value: number): string {

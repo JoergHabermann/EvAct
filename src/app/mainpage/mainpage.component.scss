@@ -46,6 +46,7 @@ h1 {
 .upper-wrapper {
   @include flexParams($justify: space-between);
   width: 90%;
+  max-width: 1400px;
 }
 
 .range-wrapper {

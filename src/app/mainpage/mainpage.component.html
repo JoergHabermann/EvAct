@@ -2,7 +2,7 @@
 
 <main>
   <div class="upper-wrapper">
-    <app-map></app-map>
+    <app-map [latitude]="this.userLatitude" [longitude]="this.userLongitude" [markers]="this.mapMarkers"></app-map>
     <mat-card appearance="raised">
       <mat-card-content>
         <form [formGroup]="dataForm">
