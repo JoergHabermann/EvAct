@@ -125,8 +125,7 @@ export class MainpageComponent implements OnInit {
       const node_marker : Marker = {
         latitude : node.lat,
         longitude : node.lon,
-        popupText : node.lat,
-        color : 'green'
+        popupText : node.tags.name,        
       }
       this.mapMarkers.push(node_marker);
     }    

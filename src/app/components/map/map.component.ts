@@ -51,13 +51,7 @@ markerLayer: any;
     this.markerLayer = L.layerGroup();
 
     this.markers.forEach(markerData => {
-      const icon = L.icon({
-        iconUrl: `https://example.com/${markerData.color}-marker.png`,
-        iconSize: [25, 41],
-        iconAnchor: [12, 41]
-      });
-
-      const marker = L.marker([markerData.latitude, markerData.longitude], { icon: icon })
+      const marker = L.marker([markerData.latitude, markerData.longitude])
         .bindPopup(markerData.popupText);
 
       this.markerLayer.addLayer(marker);
