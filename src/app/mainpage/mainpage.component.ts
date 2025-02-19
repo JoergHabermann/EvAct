@@ -125,7 +125,8 @@ export class MainpageComponent implements OnInit {
       const node_marker : Marker = {
         latitude : node.lat,
         longitude : node.lon,
-        popupText : node.tags.name,        
+        popupText : node.tags.name ? node.tags.name : this.category,  
+        distance : node.distance       
       }
       this.mapMarkers.push(node_marker);
     }    
@@ -165,7 +166,7 @@ export class MainpageComponent implements OnInit {
     console.log(this.category);    
     await this.fetchData(this.userLatitude,this.userLongitude,range,this.category);     
     console.log(this.locationData);  
-    this.pushMarkers();  
+    this.pushMarkers();
   }
 
   formatLabel(value: number): string {

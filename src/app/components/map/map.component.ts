@@ -13,7 +13,7 @@ export class MapComponent implements OnInit, OnChanges {
 
 @Input() latitude : number = 0;
 @Input() longitude : number = 0;
-@Input() zoom : number = 13;
+@Input() zoom : number = 10;
 @Input() markers: Marker[] = [];
 
 map : any;
@@ -44,6 +44,9 @@ markerLayer: any;
         this.map.removeLayer(this.markerLayer);
       }      
       this.addMarkers();
+      if (this.markers.length > 0) {
+        this.zoom = (this.markers[this.markers.length - 1].distance) * 10;
+      }      
     }
   }
 
@@ -52,8 +55,8 @@ markerLayer: any;
 
     this.markers.forEach(markerData => {
       const marker = L.marker([markerData.latitude, markerData.longitude])
-        .bindPopup(markerData.popupText);
-
+        .bindPopup(markerData.popupText)
+        
       this.markerLayer.addLayer(marker);
     });
 
