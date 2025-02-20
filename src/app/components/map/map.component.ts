@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Marker } from '../../models/marker.model';
+import { MapService } from '../../services/map.service';
 declare let L: any; 
 
 @Component({
@@ -13,12 +14,14 @@ export class MapComponent implements OnInit, OnChanges {
 
 @Input() latitude : number = 0;
 @Input() longitude : number = 0;
-@Input() zoom : number = 10;
 @Input() markers: Marker[] = [];
+
+constructor(private mapService: MapService) {}
 
 map : any;
 position_marker : any;
 markerLayer: any;
+zoom : number = 13;
 
   ngOnInit(): void {    
     this.map = L.map('map').setView([this.latitude, this.longitude], this.zoom);    
@@ -45,7 +48,7 @@ markerLayer: any;
       }      
       this.addMarkers();
       if (this.markers.length > 0) {
-        this.zoom = (this.markers[this.markers.length - 1].distance) * 10;
+        this.map.setZoom(this.mapService.setMapZoom(this.markers.at(-1)!));
       }      
     }
   }
@@ -62,4 +65,5 @@ markerLayer: any;
 
     this.markerLayer.addTo(this.map);     
   }
+
 }
