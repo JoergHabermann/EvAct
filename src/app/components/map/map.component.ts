@@ -42,7 +42,8 @@ zoom : number = 13;
         this.position_marker.setLatLng([this.latitude, this.longitude])          
       }
     }
-    if (changes['markers'] && this.map) {     
+    if (changes['markers'] && this.map) {   
+       
       if (this.markerLayer) {
         this.map.removeLayer(this.markerLayer);
       }      
@@ -54,11 +55,11 @@ zoom : number = 13;
   }
 
   addMarkers() {    
-    this.markerLayer = L.layerGroup();
-
+    this.markerLayer = L.layerGroup();    
     this.markers.forEach(markerData => {
       const marker = L.marker([markerData.latitude, markerData.longitude])
         .bindPopup(markerData.popupText)
+        
         
       this.markerLayer.addLayer(marker);
     });

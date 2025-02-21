@@ -122,7 +122,8 @@ export class MainpageComponent implements OnInit {
     }  
   }
 
-  pushMarkers() {     
+  pushMarkers() {    
+    this.mapMarkers = []; 
     for (const node of this.locationData) {
       const node_marker : Marker = {
         latitude : node.lat,
