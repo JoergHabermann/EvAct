@@ -37,5 +37,6 @@ export class MapService {
     if (marker.distance > 20) return 9;
     else return 10; 
   }
+  
 
 }

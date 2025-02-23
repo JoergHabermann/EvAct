@@ -51,6 +51,8 @@ export class MainpageComponent implements OnInit {
   searchType : string = '';
   userLatitude : number = 0;
   userLongitude : number = 0;
+  zoomlat : number = 0;
+  zoomlong : number = 0;
   userCity : any;
   category : string = '';
   mapMarkers : Marker[] = [];
@@ -177,4 +179,11 @@ export class MainpageComponent implements OnInit {
   formatLabel(value: number): string {
     return value + 'km';
   }  
+
+  sendZoomCoords(nodelat : number, nodelong : number) {
+    debugger;
+    this.zoomlat = nodelat;
+    this.zoomlong = nodelong;
+  }
+
 }

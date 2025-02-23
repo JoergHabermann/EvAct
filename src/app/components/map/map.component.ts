@@ -15,6 +15,8 @@ export class MapComponent implements OnInit, OnChanges {
 @Input() latitude : number = 0;
 @Input() longitude : number = 0;
 @Input() markers: Marker[] = [];
+@Input() zoomlat : number = 0;
+@Input() zoomlong : number = 0;
 
 constructor(private mapService: MapService) {}
 
@@ -42,6 +44,8 @@ zoom : number = 13;
         this.position_marker.setLatLng([this.latitude, this.longitude])          
       }
     }
+
+
     if (changes['markers'] && this.map) {   
        
       if (this.markerLayer) {
@@ -51,6 +55,10 @@ zoom : number = 13;
       if (this.markers.length > 0) {
         this.map.setZoom(this.mapService.setMapZoom(this.markers.at(-1)!));
       }      
+    }
+
+    if (changes['zoomlat'] || changes['zoomlong']) {
+      this.map.setView(this.zoomlat, this.zoomlong, 12);
     }
   }
 
@@ -66,5 +74,4 @@ zoom : number = 13;
 
     this.markerLayer.addTo(this.map);     
   }
-
 }
