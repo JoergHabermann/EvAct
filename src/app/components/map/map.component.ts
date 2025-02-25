@@ -57,8 +57,8 @@ zoom : number = 13;
       }      
     }
 
-    if (changes['zoomlat'] || changes['zoomlong']) {
-      this.map.setView(this.zoomlat, this.zoomlong, 12);
+    if (changes['zoomlat']?.currentValue || changes['zoomlong']?.currentValue) {
+      this.map.setView([this.zoomlat, this.zoomlong], 12);
     }
   }
 
@@ -66,9 +66,7 @@ zoom : number = 13;
     this.markerLayer = L.layerGroup();    
     this.markers.forEach(markerData => {
       const marker = L.marker([markerData.latitude, markerData.longitude])
-        .bindPopup(markerData.popupText)
-        
-        
+        .bindPopup(markerData.popupText)        
       this.markerLayer.addLayer(marker);
     });
 

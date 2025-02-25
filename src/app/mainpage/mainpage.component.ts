@@ -180,8 +180,7 @@ export class MainpageComponent implements OnInit {
     return value + 'km';
   }  
 
-  sendZoomCoords(nodelat : number, nodelong : number) {
-    debugger;
+  sendZoomCoords(nodelat : number, nodelong : number) {    
     this.zoomlat = nodelat;
     this.zoomlong = nodelong;
   }
