@@ -1,6 +1,6 @@
 export interface Marker {
   latitude: number;
   longitude: number;
-  popupText: string;  
+  toolText: string;  
   distance: number;
 }

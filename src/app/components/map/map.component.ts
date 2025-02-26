@@ -26,13 +26,17 @@ markerLayer: any;
 zoom : number = 13;
 
   ngOnInit(): void {    
+    const customIcon = L.divIcon({ 
+      html: '<div style="background: green; width: 20px; height: 20px; border-radius: 50%;"></div>',
+      className: '', 
+      iconSize: [20, 20]
+  });
     this.map = L.map('map').setView([this.latitude, this.longitude], this.zoom);    
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map);
-    this.position_marker = L.marker([this.latitude, this.longitude]).addTo(this.map)
-      .bindPopup('Du befindes Dich hier')
+    this.position_marker = L.marker([this.latitude, this.longitude], { icon: customIcon }).addTo(this.map).bindPopup('Du befindes Dich hier')
       .openPopup();
     this.addMarkers();
   }
@@ -66,7 +70,8 @@ zoom : number = 13;
     this.markerLayer = L.layerGroup();    
     this.markers.forEach(markerData => {
       const marker = L.marker([markerData.latitude, markerData.longitude])
-        .bindPopup(markerData.popupText)        
+        .bindTooltip(markerData.toolText, {permanent : true, direction : "top"})
+        .openTooltip();        
       this.markerLayer.addLayer(marker);
     });
 

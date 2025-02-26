@@ -130,7 +130,7 @@ export class MainpageComponent implements OnInit {
       const node_marker : Marker = {
         latitude : node.lat,
         longitude : node.lon,
-        popupText : node.tags.name ? node.tags.name : this.category,  
+        toolText : node.tags.name ? node.tags.name : this.category,  
         distance : node.distance       
       }
       this.mapMarkers.push(node_marker);
