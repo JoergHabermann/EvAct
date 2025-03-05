@@ -60,8 +60,9 @@ h1 {
 
 .panel-info-wrapper {
   width: 100%;
-  @include flexParams($justify:space-between);  
-  >div:first-child {
+  @include flexParams($align: flex-start,$justify:center, $direction: column);  
+  gap: 16px;
+  >div {
     @include flexParams();
     gap: 16px;
 

@@ -89,9 +89,16 @@
           <div>{{node.road}}{{' '}}{{node.house_number}}</div>          
           <div>{{node.postcode}}</div>
           <div>{{node.town}}</div>
-          <div>{{node.suburb}}</div>
-          <button mat-raised-button (click)="sendZoomCoords(node.lat,node.lon)">Zur Karte</button>
+          <div>{{node.suburb}}</div>          
         </div>        
+        <div>          
+          <div>{{ node.tags.opening_hours }}</div>          
+        </div>
+        <div>
+          <a *ngIf="node.tags.phone" href="{{'tel:+49' + node.tags.phone}}">Call +49 {{node.tags.phone}}</a>
+          <a href="{{ node.tags.website }}">{{ node.tags.website }}</a>
+        </div>
+        <button mat-raised-button (click)="sendZoomCoords(node.lat,node.lon)">Zur Karte</button>
       </div>      
     </mat-expansion-panel>    
   </mat-card>  
