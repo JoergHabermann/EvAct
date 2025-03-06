@@ -98,7 +98,12 @@
           <a *ngIf="node.tags.phone" href="{{'tel:+49' + node.tags.phone}}">Call +49 {{node.tags.phone}}</a>
           <a href="{{ node.tags.website }}">{{ node.tags.website }}</a>
         </div>
-        <button mat-raised-button (click)="sendZoomCoords(node.lat,node.lon)">Zur Karte</button>
+        <div>
+          <button mat-raised-button (click)="sendZoomCoords(node.lat,node.lon)">Zur Karte</button>
+          <button mat-raised-button>Route anzeigen</button>
+          <button mat-raised-button>Einplanen</button>
+        </div>
+        
       </div>      
     </mat-expansion-panel>    
   </mat-card>  
