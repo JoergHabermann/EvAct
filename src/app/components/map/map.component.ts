@@ -1,7 +1,8 @@
 import { Component, Input, Output, OnChanges, OnInit, SimpleChanges, EventEmitter } from '@angular/core';
 import { Marker } from '../../models/marker.model';
 import { MapService } from '../../services/map.service';
-declare let L: any; 
+import * as L from 'leaflet';
+import 'leaflet-routing-machine';
 
 @Component({
   selector: 'app-map',
@@ -20,6 +21,7 @@ export class MapComponent implements OnInit, OnChanges {
 
 @Output() markerClick = new EventEmitter<Marker>();
 
+private routingControl: any;
 
 constructor(private mapService: MapService) {}
 
@@ -42,6 +44,7 @@ zoom : number = 13;
     this.position_marker = L.marker([this.latitude, this.longitude], { icon: customIcon }).addTo(this.map).bindPopup('Du befindes Dich hier')
       .openPopup();
     this.addMarkers();
+    this.initRouting();
   }
 
   ngOnChanges(changes: SimpleChanges): void {    
@@ -67,6 +70,53 @@ zoom : number = 13;
     if (changes['zoomlat']?.currentValue || changes['zoomlong']?.currentValue) {
       this.map.setView([this.zoomlat, this.zoomlong], 12);
     }
+
+    if ((changes['markers'] || changes['latitude'] || changes['longitude']) && this.map) {
+      this.updateRouting();
+    }
+  }
+
+  private initRouting(): void {
+    if (this.routingControl) {
+      this.map.removeControl(this.routingControl);
+    }
+
+    // Configure routing with OSRM
+    this.routingControl = L.Routing.control({
+      waypoints: [
+        L.latLng(this.latitude, this.longitude), // Start position
+        L.latLng(this.markers[0]?.latitude, this.markers[0]?.longitude) // First marker
+      ],
+      router: L.Routing.osrmv1({
+        serviceUrl: 'https://router.project-osrm.org/route/v1'
+      }),
+      routeWhileDragging: true,
+      show: false // Hide default waypoint markers
+    }).addTo(this.map);
+
+    // Add custom styling
+    this.routingControl.on('routesfound', (e: any) => {
+      const routes = e.routes;
+      const route = routes[0];
+      if (route) {
+        L.polyline(route.coordinates, {
+          color: '#3388ff',
+          weight: 5
+        }).addTo(this.map);
+      }
+    });
+  }
+
+  private updateRouting(): void {
+    if (this.markers.length > 0 && this.routingControl) {
+      const waypoints = [
+        L.latLng(this.latitude, this.longitude),
+        L.latLng(this.markers[0].latitude, this.markers[0].longitude)
+      ];
+      
+      this.routingControl.setWaypoints(waypoints);
+      this.routingControl.route();
+    }
   }
 
   addMarkers() {    
@@ -77,10 +127,27 @@ zoom : number = 13;
         .openTooltip()
         .on('click', () => {
           this.markerClick.emit(markerData);
+          this.updateRouteToClickedMarker(markerData);
         })        
       this.markerLayer.addLayer(marker);
     });
 
     this.markerLayer.addTo(this.map);     
+  }
+
+  private updateRouteToClickedMarker(marker: Marker): void {
+    if (this.routingControl) {
+      const waypoints = [
+        L.latLng(this.latitude, this.longitude),
+        L.latLng(marker.latitude, marker.longitude)
+      ];
+      this.routingControl.setWaypoints(waypoints).route();
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.routingControl) {
+      this.map.removeControl(this.routingControl);
+    }
   }
 }
