@@ -1,16 +1,23 @@
 <header></header>
 
 <main>
-  <div class="upper-wrapper">    
+  <div class="upper-wrapper">
     <mat-card appearance="raised">
       <mat-card-content>
         <form [formGroup]="dataForm">
           <h1>EvAct Suche</h1>
-          
-          <h2>Deine Position:</h2>
-          <div class="center"><img class="position-small" src="./assets/img/posi.png" alt="location">
-            {{ this.userCity?.address.road + ', ' + this.userCity?.address.city }}</div>
 
+          <h2>Deine Position:</h2>
+          <div class="center">
+            <img
+              class="position-small"
+              src="./assets/img/posi.png"
+              alt="location"
+            />
+            {{
+              this.userCity?.address.road + ", " + this.userCity?.address.city
+            }}
+          </div>
 
           <mat-form-field>
             <mat-label>Casino</mat-label>
@@ -18,7 +25,7 @@
               <mat-option value="theatre">Kino</mat-option>
               <mat-option value="casino">Casino</mat-option>
               <mat-option value="swimming_pool">Schwimmbad</mat-option>
-              <mat-option value="park">Park</mat-option>            
+              <mat-option value="park">Park</mat-option>
             </mat-select>
           </mat-form-field>
 
@@ -30,31 +37,29 @@
               step="1"
               showTickMarks
               discrete
-              [displayWith]="formatLabel"            
+              [displayWith]="formatLabel"
             >
-              <input matSliderThumb formControlName="rangeValue"/>
+              <input matSliderThumb formControlName="rangeValue" />
             </mat-slider>
           </div>
 
-          
-            <mat-form-field>
-              <mat-label>Datumsbereich</mat-label>
-              <mat-date-range-input [rangePicker]="picker">
-                <input
-                  matStartDate
-                  formControlName="start"
-                  placeholder="Start date"
-                />
-                <input matEndDate formControlName="end" placeholder="End date" />
-              </mat-date-range-input>
-              <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle
-                matIconSuffix
-                [for]="picker"
-              ></mat-datepicker-toggle>
-              <mat-date-range-picker #picker></mat-date-range-picker>
-            </mat-form-field>
-          
+          <mat-form-field>
+            <mat-label>Datumsbereich</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input
+                matStartDate
+                formControlName="start"
+                placeholder="Start date"
+              />
+              <input matEndDate formControlName="end" placeholder="End date" />
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
 
           <div class="example-button-container">
             <button mat-fab extended (click)="logData()">
@@ -62,50 +67,70 @@
               Suchen
             </button>
           </div>
-
         </form>
       </mat-card-content>
     </mat-card>
-    <app-map 
-    [latitude]="this.userLatitude" 
-    [longitude]="this.userLongitude" 
-    [markers]="this.mapMarkers"
-    [zoomlat]="this.zoomlat"
-    [zoomlong]="this.zoomlong"
+    <app-map
+      [latitude]="this.userLatitude"
+      [longitude]="this.userLongitude"
+      [markers]="this.mapMarkers"
+      [zoomlat]="this.zoomlat"
+      [zoomlong]="this.zoomlong"
+      (markerClick)="handleMarkerClick($event)"
     ></app-map>
   </div>
 
-  <mat-card appearance="raised" class="data-result-wrapper" *ngIf="locationData">
-    <mat-expansion-panel class="wide" *ngFor="let node of locationData" (opened)="pushNominatim(node)">
-      <mat-expansion-panel-header >
+  <mat-card
+    appearance="raised"
+    class="data-result-wrapper"
+    *ngIf="locationData"
+  >
+    <mat-expansion-panel
+      [expanded]="node === selectedMarker"
+      class="wide"
+      *ngFor="let node of locationData"
+      (opened)="pushNominatim(node)"
+    >
+      <mat-expansion-panel-header>
         <mat-panel-title class="node-card">
-          <div>{{'Entfernung: ' + node.distance + ' km '}}</div>
-          <div>{{node.tags.name ? node.tags.name.toUpperCase() : this.category.toUpperCase()}}</div>
+          <div>{{ "Entfernung: " + node.distance + " km " }}</div>
+          <div>
+            {{
+              node.tags.name
+                ? node.tags.name.toUpperCase()
+                : this.category.toUpperCase()
+            }}
+          </div>
           <span class="prime-color">Mehr Details</span>
-        </mat-panel-title>        
+        </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-info-wrapper">
         <div>
-          <div>{{node.road}}{{' '}}{{node.house_number}}</div>          
-          <div>{{node.postcode}}</div>
-          <div>{{node.town}}</div>
-          <div>{{node.suburb}}</div>          
-        </div>        
-        <div>          
-          <div>{{ node.tags.opening_hours }}</div>          
+          <div>{{ node.road }}{{ " " }}{{ node.house_number }}</div>
+          <div>{{ node.postcode }}</div>
+          <div>{{ node.town }}</div>
+          <div>{{ node.suburb }}</div>
         </div>
         <div>
-          <a *ngIf="node.tags.phone" href="{{'tel:+49' + node.tags.phone}}">Call +49 {{node.tags.phone}}</a>
+          <div>{{ node.tags.opening_hours }}</div>
+        </div>
+        <div>
+          <a *ngIf="node.tags.phone" href="{{ 'tel:+49' + node.tags.phone }}"
+            >Call +49 {{ node.tags.phone }}</a
+          >
           <a href="{{ node.tags.website }}">{{ node.tags.website }}</a>
         </div>
         <div>
-          <button mat-raised-button (click)="sendZoomCoords(node.lat,node.lon)">Zur Karte</button>
+          <button
+            mat-raised-button
+            (click)="sendZoomCoords(node.lat, node.lon)"
+          >
+            Zur Karte
+          </button>
           <button mat-raised-button>Route anzeigen</button>
           <button mat-raised-button>Einplanen</button>
         </div>
-        
-      </div>      
-    </mat-expansion-panel>    
-  </mat-card>  
+      </div>
+    </mat-expansion-panel>
+  </mat-card>
 </main>
-

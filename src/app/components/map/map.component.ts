@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, OnChanges, OnInit, SimpleChanges, EventEmitter } from '@angular/core';
 import { Marker } from '../../models/marker.model';
 import { MapService } from '../../services/map.service';
 declare let L: any; 
@@ -17,6 +17,9 @@ export class MapComponent implements OnInit, OnChanges {
 @Input() markers: Marker[] = [];
 @Input() zoomlat : number = 0;
 @Input() zoomlong : number = 0;
+
+@Output() markerClick = new EventEmitter<Marker>();
+
 
 constructor(private mapService: MapService) {}
 
@@ -71,7 +74,10 @@ zoom : number = 13;
     this.markers.forEach(markerData => {
       const marker = L.marker([markerData.latitude, markerData.longitude])
         .bindTooltip(markerData.toolText, {permanent : true, direction : "top"})
-        .openTooltip();        
+        .openTooltip()
+        .on('click', () => {
+          this.markerClick.emit(markerData);
+        })        
       this.markerLayer.addLayer(marker);
     });
 

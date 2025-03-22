@@ -1,4 +1,5 @@
 export interface Node {
+    id: number;
     lat: number;
     lon: number;    
     distance: number;

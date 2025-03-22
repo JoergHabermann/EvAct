@@ -56,7 +56,8 @@ export class MainpageComponent implements OnInit {
   userCity : any;
   category : string = '';
   mapMarkers : Marker[] = [];
-
+  selectedMarker = {} as Node;
+ 
   dataForm = new FormGroup({
     rangeValue: new FormControl(25),
     start: new FormControl(),
@@ -128,6 +129,7 @@ export class MainpageComponent implements OnInit {
     this.mapMarkers = []; 
     for (const node of this.locationData) {
       const node_marker : Marker = {
+        id : node.id,
         latitude : node.lat,
         longitude : node.lon,
         toolText : node.tags.name ? node.tags.name : this.category,  
@@ -183,6 +185,11 @@ export class MainpageComponent implements OnInit {
   sendZoomCoords(nodelat : number, nodelong : number) {    
     this.zoomlat = nodelat;
     this.zoomlong = nodelong;
+  }
+
+  handleMarkerClick(Marker: Marker) {
+    this.selectedMarker = this.locationData.find( (node : Node) =>
+      node.id === Marker.id);
   }
 
 }
