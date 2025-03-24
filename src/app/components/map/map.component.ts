@@ -90,9 +90,19 @@ zoom : number = 13;
       router: L.Routing.osrmv1({
         serviceUrl: 'https://router.project-osrm.org/route/v1'
       }),
-      routeWhileDragging: true,
-      show: false // Hide default waypoint markers
-    }).addTo(this.map);
+      routeWhileDragging: false,
+      show: false, // Hide default waypoint markers
+      collapsible: true, // Deaktiviert das Zusammenklappen
+      addWaypoints: false, // Verhindert das Hinzufügen von Waypoints durch Klicken
+      lineOptions: {
+        styles: [{ color: '#3388ff', weight: 5 }],
+        extendToWaypoints: false,    // Fehlende Eigenschaft hinzufügen
+        missingRouteTolerance: 0     // Fehlende Eigenschaft hinzufügen
+      },     
+      waypointMode: 'snap', // Optional: Verhindert manuelle Waypoint-Änderung
+      // Fügt das Panel einem versteckten Container hinzu
+      
+      }).addTo(this.map);   
 
     // Add custom styling
     this.routingControl.on('routesfound', (e: any) => {
@@ -105,7 +115,10 @@ zoom : number = 13;
         }).addTo(this.map);
       }
     });
+    
   }
+
+  
 
   private updateRouting(): void {
     if (this.markers.length > 0 && this.routingControl) {
