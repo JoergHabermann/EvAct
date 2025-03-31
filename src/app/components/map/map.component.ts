@@ -55,9 +55,7 @@ zoom : number = 13;
       }
     }
 
-
-    if (changes['markers'] && this.map) {   
-       
+    if (changes['markers'] && this.map) {       
       if (this.markerLayer) {
         this.map.removeLayer(this.markerLayer);
       }      
@@ -69,67 +67,35 @@ zoom : number = 13;
 
     if (changes['zoomlat']?.currentValue || changes['zoomlong']?.currentValue) {
       this.map.setView([this.zoomlat, this.zoomlong], 12);
-    }
+    }    
 
-    if ((changes['markers'] || changes['latitude'] || changes['longitude']) && this.map) {
-      this.updateRouting();
-    }
+    
   }
 
   private initRouting(): void {
     if (this.routingControl) {
       this.map.removeControl(this.routingControl);
     }
-
-    // Configure routing with OSRM
+        
     this.routingControl = L.Routing.control({
       waypoints: [
-        L.latLng(this.latitude, this.longitude), // Start position
-        L.latLng(this.markers[0]?.latitude, this.markers[0]?.longitude) // First marker
+        L.latLng(this.latitude, this.longitude), 
+        L.latLng(this.markers[0]?.latitude, this.markers[0]?.longitude)
       ],
       router: L.Routing.osrmv1({
         serviceUrl: 'https://router.project-osrm.org/route/v1'
       }),
       routeWhileDragging: false,
-      show: false, // Hide default waypoint markers
-      collapsible: true, // Deaktiviert das Zusammenklappen
-      addWaypoints: false, // Verhindert das Hinzufügen von Waypoints durch Klicken
+      show: false,
+      collapsible: true, 
+      addWaypoints: false, 
       lineOptions: {
         styles: [{ color: '#3388ff', weight: 5 }],
-        extendToWaypoints: false,    // Fehlende Eigenschaft hinzufügen
-        missingRouteTolerance: 0     // Fehlende Eigenschaft hinzufügen
+        extendToWaypoints: false,    
+        missingRouteTolerance: 0     
       },     
-      waypointMode: 'snap', // Optional: Verhindert manuelle Waypoint-Änderung
-      // Fügt das Panel einem versteckten Container hinzu
-      
-      }).addTo(this.map);   
-
-    // Add custom styling
-    this.routingControl.on('routesfound', (e: any) => {
-      const routes = e.routes;
-      const route = routes[0];
-      if (route) {
-        L.polyline(route.coordinates, {
-          color: '#3388ff',
-          weight: 5
-        }).addTo(this.map);
-      }
-    });
-    
-  }
-
-  
-
-  private updateRouting(): void {
-    if (this.markers.length > 0 && this.routingControl) {
-      const waypoints = [
-        L.latLng(this.latitude, this.longitude),
-        L.latLng(this.markers[0].latitude, this.markers[0].longitude)
-      ];
-      
-      this.routingControl.setWaypoints(waypoints);
-      this.routingControl.route();
-    }
+      waypointMode: 'snap',      
+      }).addTo(this.map);    
   }
 
   addMarkers() {    
@@ -139,8 +105,7 @@ zoom : number = 13;
         .bindTooltip(markerData.toolText, {permanent : true, direction : "top"})
         .openTooltip()
         .on('click', () => {
-          this.markerClick.emit(markerData);
-          this.updateRouteToClickedMarker(markerData);
+          this.markerClick.emit(markerData);          
         })        
       this.markerLayer.addLayer(marker);
     });
@@ -148,7 +113,7 @@ zoom : number = 13;
     this.markerLayer.addTo(this.map);     
   }
 
-  private updateRouteToClickedMarker(marker: Marker): void {
+  private updateRouteToMarker(marker: Marker): void {
     if (this.routingControl) {
       const waypoints = [
         L.latLng(this.latitude, this.longitude),
