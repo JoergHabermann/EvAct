@@ -46,7 +46,6 @@ import { MapComponent } from '../components/map/map.component';
 })
 export class MainpageComponent implements OnInit {
   readonly panelOpenState = signal(false);
-  
 
   searchType : string = '';
   userLatitude : number = 0;
@@ -57,6 +56,7 @@ export class MainpageComponent implements OnInit {
   category : string = '';
   mapMarkers : Marker[] = [];
   selectedMarker = {} as Node;
+  selectedRoute : number = 0;
  
   dataForm = new FormGroup({
     rangeValue: new FormControl(25),
@@ -190,6 +190,10 @@ export class MainpageComponent implements OnInit {
   handleMarkerClick(Marker: Marker) {
     this.selectedMarker = this.locationData.find( (node : Node) =>
       node.id === Marker.id);
+  }
+
+  setRoute(id : number) {
+    this.selectedRoute = id;
   }
 
 }

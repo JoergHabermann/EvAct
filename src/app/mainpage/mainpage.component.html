@@ -76,7 +76,7 @@
       [markers]="this.mapMarkers"
       [zoomlat]="this.zoomlat"
       [zoomlong]="this.zoomlong"
-      
+      [destid]="this.selectedRoute"
       (markerClick)="handleMarkerClick($event)"
     ></app-map>
   </div>
@@ -125,10 +125,11 @@
           <button
             mat-raised-button
             (click)="sendZoomCoords(node.lat, node.lon)"
-          >
-            Zur Karte
+            >Zur Karte
           </button>
-          <button mat-raised-button>Route anzeigen</button>
+          <button 
+            (click)="setRoute(node.id)"
+            mat-raised-button>Route anzeigen</button>
           <button mat-raised-button>Einplanen</button>
         </div>
       </div>
