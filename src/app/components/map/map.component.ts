@@ -129,7 +129,7 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   private updateRouteToMarker(id: number): void {
-    const destmarker = this.markers.find((marker: Marker) => id === marker.id);
+    const destmarker : Marker = this.markers.find((marker: Marker) => id === marker.id)!;
     if (this.routingControl) {
       const waypoints = [
         L.latLng(this.latitude, this.longitude),
@@ -137,6 +137,7 @@ export class MapComponent implements OnInit, OnChanges {
       ];
       this.routingControl.setWaypoints(waypoints).route();
     }
+    this.map.setZoom(this.mapService.setMapZoom(destmarker));
   }
 
   ngOnDestroy() {

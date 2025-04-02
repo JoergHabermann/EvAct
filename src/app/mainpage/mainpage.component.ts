@@ -190,6 +190,7 @@ export class MainpageComponent implements OnInit {
   handleMarkerClick(Marker: Marker) {
     this.selectedMarker = this.locationData.find( (node : Node) =>
       node.id === Marker.id);
+    this.setRoute(Marker.id);
   }
 
   setRoute(id : number) {
