@@ -16,6 +16,10 @@ mat-slider {
   width: 60%;
 }
 
+app-map {
+  overflow: visible;
+}
+
 .center {
   @include flexParams();
   >img {

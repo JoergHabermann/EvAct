@@ -10,12 +10,19 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-:host::ng-deep .leaflet-routing-alt {
-  display: none !important;
-    max-height: 0;
-    overflow: hidden;
-    padding: 0;
+:host::ng-deep .leaflet-routing-alt {    
+    max-height: 80px;
+    overflow: hidden;    
 } 
+
+:host::ng-deep .leaflet-routing-alt-minimized {
+  display: none !important;
+  max-height: 80px;
+  overflow: hidden;
+  padding: 0;  
+} 
+
+
 
 
 
