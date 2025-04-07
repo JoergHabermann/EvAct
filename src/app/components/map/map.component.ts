@@ -83,7 +83,7 @@ export class MapComponent implements OnInit, OnChanges {
     }
 
     if (changes['destid'] && this.destid != 0 && this.map) {      
-      this.updateRouteToMarker(this.destid);
+      this.updateRouteToMarker(this.destid);      
     }
   }
 
@@ -117,10 +117,10 @@ export class MapComponent implements OnInit, OnChanges {
     this.markerLayer = L.layerGroup();
     this.markers.forEach((markerData) => {
       const marker = L.marker([markerData.latitude, markerData.longitude])
-        .bindTooltip(markerData.toolText, { permanent: true, direction: 'top' })
-        .openTooltip()
+        .bindTooltip(markerData.toolText, { permanent: false, direction: 'top' })        
         .on('click', () => {
-          this.markerClick.emit(markerData);
+          this.markerClick.emit(markerData);          
+          marker.bindPopup(markerData.toolText).openPopup();
         });
       this.markerLayer.addLayer(marker);
     });
@@ -137,6 +137,9 @@ export class MapComponent implements OnInit, OnChanges {
       ];
       this.routingControl.setWaypoints(waypoints).route();
     }
+    /* debugger; */
+    L.marker([destmarker.latitude, destmarker.longitude])
+    .bindPopup(destmarker.toolText).openPopup().addTo(this.map);
     this.map.setZoom(this.mapService.setMapZoom(destmarker));
   }
 
