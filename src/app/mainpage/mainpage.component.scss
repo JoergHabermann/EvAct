@@ -76,7 +76,16 @@ h1 {
 .data-result-wrapper {
   @include flexParams($direction:column);
   width: 90%;
-  gap: 8px;
+  gap: 8px;   
+}
+
+.result-card-wrapper {
+  height: 500px;
+  overflow-y: auto; 
+}
+
+mat-expansion-panel {
+  min-height: 48px;
 }
 
 .data-result-card {

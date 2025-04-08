@@ -70,6 +70,63 @@
         </form>
       </mat-card-content>
     </mat-card>
+    <div class="result-card-wrapper">      
+        <mat-card
+        appearance="raised"
+        class="data-result-wrapper"
+        *ngIf="locationData"
+        >
+        <mat-expansion-panel
+          [expanded]="node === selectedMarker"
+          class="wide"
+          *ngFor="let node of locationData"
+          (opened)="pushNominatim(node)"
+          hideToggle="true"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title class="node-card">
+              <div>{{ "Entfernung: " + node.distance + " km " }}</div>
+              <div>
+                {{
+                  node.tags.name
+                    ? node.tags.name.toUpperCase()
+                    : this.category.toUpperCase()
+                }}
+              </div>
+              <!-- <span class="prime-color">Mehr Details</span> -->
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="panel-info-wrapper">
+            <div>
+              <div>{{ node.road }}{{ " " }}{{ node.house_number }}</div>
+              <div>{{ node.postcode }}</div>
+              <div>{{ node.town }}</div>
+              <div>{{ node.suburb }}</div>
+            </div>
+            <div>
+              <div>{{ node.tags.opening_hours }}</div>
+            </div>
+            <div>
+              <a *ngIf="node.tags.phone" href="{{ 'tel:+49' + node.tags.phone }}"
+                >Call +49 {{ node.tags.phone }}</a
+              >
+              <a href="{{ node.tags.website }}">{{ node.tags.website }}</a>
+            </div>
+            <div>
+              <button
+                mat-raised-button
+                (click)="sendZoomCoords(node.lat, node.lon)"
+                >Zur Karte
+              </button>
+              <button 
+                (click)="setRoute(node.id)"
+                mat-raised-button>Route anzeigen</button>
+              <button mat-raised-button>Einplanen</button>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-card>
+    </div>
     <app-map
       [latitude]="this.userLatitude"
       [longitude]="this.userLongitude"
@@ -81,58 +138,5 @@
     ></app-map>
   </div>
 
-  <mat-card
-    appearance="raised"
-    class="data-result-wrapper"
-    *ngIf="locationData"
-  >
-    <mat-expansion-panel
-      [expanded]="node === selectedMarker"
-      class="wide"
-      *ngFor="let node of locationData"
-      (opened)="pushNominatim(node)"
-    >
-      <mat-expansion-panel-header>
-        <mat-panel-title class="node-card">
-          <div>{{ "Entfernung: " + node.distance + " km " }}</div>
-          <div>
-            {{
-              node.tags.name
-                ? node.tags.name.toUpperCase()
-                : this.category.toUpperCase()
-            }}
-          </div>
-          <span class="prime-color">Mehr Details</span>
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <div class="panel-info-wrapper">
-        <div>
-          <div>{{ node.road }}{{ " " }}{{ node.house_number }}</div>
-          <div>{{ node.postcode }}</div>
-          <div>{{ node.town }}</div>
-          <div>{{ node.suburb }}</div>
-        </div>
-        <div>
-          <div>{{ node.tags.opening_hours }}</div>
-        </div>
-        <div>
-          <a *ngIf="node.tags.phone" href="{{ 'tel:+49' + node.tags.phone }}"
-            >Call +49 {{ node.tags.phone }}</a
-          >
-          <a href="{{ node.tags.website }}">{{ node.tags.website }}</a>
-        </div>
-        <div>
-          <button
-            mat-raised-button
-            (click)="sendZoomCoords(node.lat, node.lon)"
-            >Zur Karte
-          </button>
-          <button 
-            (click)="setRoute(node.id)"
-            mat-raised-button>Route anzeigen</button>
-          <button mat-raised-button>Einplanen</button>
-        </div>
-      </div>
-    </mat-expansion-panel>
-  </mat-card>
+  
 </main>

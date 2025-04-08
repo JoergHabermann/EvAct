@@ -136,10 +136,11 @@ export class MapComponent implements OnInit, OnChanges {
         L.latLng(destmarker!.latitude, destmarker!.longitude),
       ];
       this.routingControl.setWaypoints(waypoints).route();
-    }
-    /* debugger; */
-    L.marker([destmarker.latitude, destmarker.longitude])
-    .bindPopup(destmarker.toolText).openPopup().addTo(this.map);
+    }    
+    let popup = L.popup()
+    .setLatLng(new L.LatLng(destmarker.latitude, destmarker.longitude))
+    .setContent(destmarker.toolText)
+    .openOn(this.map);
     this.map.setZoom(this.mapService.setMapZoom(destmarker));
   }
 
