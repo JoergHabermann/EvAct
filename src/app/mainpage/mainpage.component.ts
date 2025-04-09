@@ -149,8 +149,7 @@ export class MainpageComponent implements OnInit {
 
   addLocationDistance(latitude : number, longitude : number, object : Node[]) {
     for (let location of object) {
-      const distance = 
-      
+      const distance =       
       this.mapService.haversineDistance(latitude,longitude,location.lat,location.lon);
       location.distance = +distance;
     }
