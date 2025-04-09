@@ -10,7 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatButtonModule} from '@angular/material/button';
 import { MatIconModule} from '@angular/material/icon';
-import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, CommonModule, NgFor, NgIf } from '@angular/common';
 import { Node } from '../models/node.model';
 import { Marker } from '../models/marker.model';
 import { OnInit } from '@angular/core';
@@ -18,6 +18,19 @@ import { GeoInformationService } from '../services/geo-information.service';
 import { MapService } from '../services/map.service';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MapComponent } from '../components/map/map.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
+export interface ActivityGroup {
+  category : string;
+  types : string[];
+}
+
+export const _filter = (opt: string[], value: string): string[] => {
+  const filterValue = value.toLowerCase();
+
+  return opt.filter(item => item.toLowerCase().includes(filterValue));
+};
+
 
 
 @Component({
@@ -38,15 +51,18 @@ import { MapComponent } from '../components/map/map.component';
     NgFor,
     CommonModule,
     MatExpansionModule,
-    MapComponent,
-
+    MapComponent,  
+    AsyncPipe,
+    MatAutocompleteModule
   ],
   templateUrl: './mainpage.component.html',
   styleUrl: './mainpage.component.scss',
 })
+
 export class MainpageComponent implements OnInit {
   readonly panelOpenState = signal(false);
 
+  
   searchType : string = '';
   userLatitude : number = 0;
   userLongitude : number = 0;
@@ -54,6 +70,7 @@ export class MainpageComponent implements OnInit {
   zoomlong : number = 0;
   userCity : any;
   category : string = '';
+  type : string = '';
   mapMarkers : Marker[] = [];
   selectedMarker = {} as Node;
   selectedRoute : number = 0;
@@ -97,10 +114,10 @@ export class MainpageComponent implements OnInit {
   }  
   
 
-  async fetchData(latitude : number, longitude : number, range : number, type : string) {    
+  async fetchData(latitude : number, longitude : number, range : number, type : string, category: string) {    
     const query = `
       [out:json];(
-        node["amenity"="${type}"](around:${range * 1000},${latitude}, ${longitude});        
+        node["${category}"="${type}"](around:${range * 1000},${latitude}, ${longitude});        
       );
       out body qt;
       out tags;
@@ -132,7 +149,7 @@ export class MainpageComponent implements OnInit {
         id : node.id,
         latitude : node.lat,
         longitude : node.lon,
-        toolText : node.tags.name ? node.tags.name : this.category,  
+        toolText : node.tags.name ? node.tags.name : this.type,  
         distance : node.distance       
       }
       this.mapMarkers.push(node_marker);
@@ -168,11 +185,11 @@ export class MainpageComponent implements OnInit {
 
   async logData() {
     const range : number = this.dataForm.get('rangeValue')!.value!;
-    this.category = this.dataForm.get('selectControl')!.value!;
+    this.type = this.dataForm.get('selectControl')!.value!;
     this.logDates();
     console.log(range);
-    console.log(this.category);    
-    await this.fetchData(this.userLatitude,this.userLongitude,range,this.category);     
+    console.log(this.type);    
+    await this.fetchData(this.userLatitude,this.userLongitude,range,this.type, 'amenity');     
     console.log(this.locationData);  
     this.pushMarkers();
   }
