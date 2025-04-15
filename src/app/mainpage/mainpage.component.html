@@ -19,7 +19,7 @@
             }}
           </div>
 
-          <!-- <form [formGroup]="activityForm">
+          <form [formGroup]="activityForm">
             <mat-form-field>
               <mat-label>Search Activities</mat-label>
               <input type="text"
@@ -27,17 +27,17 @@
                      formControlName="activityGroup"
                      required
                      [matAutocomplete]="autoGroup">
-                <mat-autocomplete #autoGroup="matAutocomplete">
-                  @for (group of activityGroupOptions | async; track group) {
-                    <mat-optgroup [label]="group.letter">
-                      @for (name of group.names; track name) {
-                        <mat-option [value]="name">{{name}}</mat-option>
-                      }
-                    </mat-optgroup>
-                  }
+              <mat-autocomplete #autoGroup="matAutocomplete">
+                @for (group of activityGroupOptions | async; track group.categoryName) {
+                  <mat-optgroup [label]="group.categoryName">
+                    @for (type of group.types; track type.value) {
+                      <mat-option [value]="type.value">{{type.name}}</mat-option>
+                    }
+                  </mat-optgroup>
+                }
               </mat-autocomplete>
             </mat-form-field>
-          </form> -->
+          </form>
 
           <mat-form-field>
             <mat-label>Casino</mat-label>

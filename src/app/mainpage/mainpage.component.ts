@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -7,7 +7,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatDatepickerModule} from '@angular/material/datepicker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { MatButtonModule} from '@angular/material/button';
 import { MatIconModule} from '@angular/material/icon';
 import { AsyncPipe, CommonModule, NgFor, NgIf } from '@angular/common';
@@ -19,10 +19,24 @@ import { MapService } from '../services/map.service';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MapComponent } from '../components/map/map.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import {Observable, of} from 'rxjs';
+import {startWith, map} from 'rxjs/operators';
+import * as data from '../../assets/data/activities.json'
+
+
+export interface ActivityType {
+  name: string;
+  value: string;
+}
 
 export interface ActivityGroup {
-  category : string;
-  types : string[];
+  categoryName: string;
+  categoryValue: string;
+  types: ActivityType[];
+}
+
+export interface ActivitiesData {
+  activityGroups: ActivityGroup[];
 }
 
 export const _filter = (opt: string[], value: string): string[] => {
@@ -60,9 +74,19 @@ export const _filter = (opt: string[], value: string): string[] => {
 })
 
 export class MainpageComponent implements OnInit {
-  readonly panelOpenState = signal(false);
+  private _formBuilder = inject(FormBuilder);
+
+  activityForm = this._formBuilder.group({
+    activityGroup: '',
+  })
 
   
+
+  activityGroupOptions: Observable<ActivityGroup[]> = of([]);
+  
+  readonly panelOpenState = signal(false);
+  
+  activityData : any;
   searchType : string = '';
   userLatitude : number = 0;
   userLongitude : number = 0;
@@ -74,6 +98,8 @@ export class MainpageComponent implements OnInit {
   mapMarkers : Marker[] = [];
   selectedMarker = {} as Node;
   selectedRoute : number = 0;
+
+  activityGroups = {} as ActivityGroup[];
  
   dataForm = new FormGroup({
     rangeValue: new FormControl(25),
@@ -88,9 +114,33 @@ export class MainpageComponent implements OnInit {
 
   async ngOnInit() {    
     await this.getLocation();    
-    this.userCity = await this.geoService.getAddress(this.userLatitude,this.userLongitude);
+    this.userCity = await this.geoService.getAddress(this.userLatitude, this.userLongitude);
     console.log(this.userCity);    
-  }
+    this.activityGroups = (data as any).activityGroups as ActivityGroup[];    
+    this.activityGroupOptions = this.activityForm.get('activityGroup')!.valueChanges.pipe(
+      startWith(''), 
+      map(searchTerm => this._filterGroup(searchTerm || '')),
+      startWith(this.activityGroups) 
+    );
+}
+
+private _filterGroup(searchTerm: string): ActivityGroup[] {
+    const filterValue = searchTerm.toLowerCase();
+    
+    if (!filterValue) {
+        return this.activityGroups;
+    }
+
+    return this.activityGroups
+        .map(group => ({
+            categoryName: group.categoryName,
+            categoryValue: group.categoryValue,
+            types: group.types.filter(type => 
+                type.name.toLowerCase().includes(filterValue) ||
+                type.value.toLowerCase().includes(filterValue)
+        )}))
+        .filter(group => group.types.length > 0);
+}
 
   getLocation(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -214,3 +264,5 @@ export class MainpageComponent implements OnInit {
   }
 
 }
+
+
