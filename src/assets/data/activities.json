@@ -30,6 +30,7 @@
         {"name": "Kunstzentrum", "value": "arts_centre"},
         {"name": "Theater", "value": "theatre"},
         {"name": "Kino", "value": "cinema"},
+        {"name": "Casino", "value": "casino"},
         {"name": "Nachtclub", "value": "nightclub"},
         {"name": "Restaurant", "value": "restaurant"},
         {"name": "Fast Food", "value": "fast_food"},

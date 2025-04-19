@@ -35,6 +35,11 @@ export interface ActivityGroup {
   types: ActivityType[];
 }
 
+export interface activityPair {
+  name: string;
+  category : string;
+}
+
 export interface ActivitiesData {
   activityGroups: ActivityGroup[];
 }
@@ -94,7 +99,7 @@ export class MainpageComponent implements OnInit {
   zoomlong : number = 0;
   userCity : any;
   category : string = '';
-  type : string = '';
+  activityTwin = {} as activityPair;
   mapMarkers : Marker[] = [];
   selectedMarker = {} as Node;
   selectedRoute : number = 0;
@@ -105,7 +110,7 @@ export class MainpageComponent implements OnInit {
     rangeValue: new FormControl(25),
     start: new FormControl(),
     end: new FormControl(),
-    selectControl: new FormControl('casino')  
+    activityGroup: new FormControl(null)
   });
 
   locationData : any = '';
@@ -136,8 +141,7 @@ private _filterGroup(searchTerm: string): ActivityGroup[] {
             categoryName: group.categoryName,
             categoryValue: group.categoryValue,
             types: group.types.filter(type => 
-                type.name.toLowerCase().includes(filterValue) ||
-                type.value.toLowerCase().includes(filterValue)
+                type.name.toLowerCase().includes(filterValue)
         )}))
         .filter(group => group.types.length > 0);
 }
@@ -199,7 +203,7 @@ private _filterGroup(searchTerm: string): ActivityGroup[] {
         id : node.id,
         latitude : node.lat,
         longitude : node.lon,
-        toolText : node.tags.name ? node.tags.name : this.type,  
+        toolText : node.tags.name ? node.tags.name : this.activityTwin.name,  
         distance : node.distance       
       }
       this.mapMarkers.push(node_marker);
@@ -234,14 +238,31 @@ private _filterGroup(searchTerm: string): ActivityGroup[] {
   }
 
   async logData() {
+    /* debugger; */
     const range : number = this.dataForm.get('rangeValue')!.value!;
-    this.type = this.dataForm.get('selectControl')!.value!;
+    this.activityTwin = this.dataForm.get('activityGroup')!.value!;
+    const activity = this.findActivityValue(this.activityTwin.name);
     this.logDates();
     console.log(range);
-    console.log(this.type);    
-    await this.fetchData(this.userLatitude,this.userLongitude,range,this.type, 'amenity');     
+    console.log(activity);  
+    console.log(this.activityTwin.category);      
+    await this.fetchData(this.userLatitude,this.userLongitude,range,activity, this.activityTwin.category);     
     console.log(this.locationData);  
     this.pushMarkers();
+  }
+
+  findActivityValue(key : string) : string {
+    for (const group of this.activityGroups) {
+      const foundType = group.types.find(type => type.name === key);
+      if (foundType) {
+        return foundType.value;
+      }
+    }
+    return key;
+  }
+
+  displayActivityName (type : activityPair): string {
+    return type ? type.name : '';
   }
 
   formatLabel(value: number): string {

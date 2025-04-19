@@ -19,35 +19,40 @@
             }}
           </div>
 
-          <form [formGroup]="activityForm">
-            <mat-form-field>
-              <mat-label>Search Activities</mat-label>
-              <input type="text"
-                     matInput
-                     formControlName="activityGroup"
-                     required
-                     [matAutocomplete]="autoGroup">
-              <mat-autocomplete #autoGroup="matAutocomplete">
-                @for (group of activityGroupOptions | async; track group.categoryName) {
-                  <mat-optgroup [label]="group.categoryName">
-                    @for (type of group.types; track type.value) {
-                      <mat-option [value]="type.value">{{type.name}}</mat-option>
-                    }
-                  </mat-optgroup>
-                }
-              </mat-autocomplete>
-            </mat-form-field>
-          </form>
-
+          
           <mat-form-field>
+            <mat-label>Aktivitäten Suche</mat-label>
+            <input type="text"
+                    matInput
+                    formControlName="activityGroup"
+                    required
+                    [matAutocomplete]="autoGroup">
+            <mat-autocomplete 
+              #autoGroup="matAutocomplete"
+              [displayWith]="displayActivityName"              
+            >
+              @for (group of activityGroupOptions | async; track group.categoryName) {
+                <mat-optgroup [label]="group.categoryName">
+                  @for (type of group.types; track type.value) {
+                    <mat-option [value]="{ name: type.name, category: group.categoryValue }">
+                      {{ type.name }}
+                    </mat-option>
+                  }
+                </mat-optgroup>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+          
+
+          <!-- <mat-form-field>
             <mat-label>Casino</mat-label>
-            <mat-select formControlName="selectControl">
+            <mat-select >
               <mat-option value="theatre">Kino</mat-option>
               <mat-option value="casino">Casino</mat-option>
               <mat-option value="swimming_pool">Schwimmbad</mat-option>
               <mat-option value="park">Park</mat-option>
             </mat-select>
-          </mat-form-field>
+          </mat-form-field> -->
 
           <div class="range-wrapper">
             <mat-label>Umkreis: </mat-label>
