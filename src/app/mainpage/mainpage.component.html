@@ -33,7 +33,7 @@
             >
               @for (group of activityGroupOptions | async; track group.categoryName) {
                 <mat-optgroup [label]="group.categoryName">
-                  @for (type of group.types; track type.value) {
+                  @for (type of group.types; track type.name) {
                     <mat-option [value]="{ name: type.name, category: group.categoryValue }">
                       {{ type.name }}
                     </mat-option>
@@ -41,18 +41,7 @@
                 </mat-optgroup>
               }
             </mat-autocomplete>
-          </mat-form-field>
-          
-
-          <!-- <mat-form-field>
-            <mat-label>Casino</mat-label>
-            <mat-select >
-              <mat-option value="theatre">Kino</mat-option>
-              <mat-option value="casino">Casino</mat-option>
-              <mat-option value="swimming_pool">Schwimmbad</mat-option>
-              <mat-option value="park">Park</mat-option>
-            </mat-select>
-          </mat-form-field> -->
+          </mat-form-field>         
 
           <div class="range-wrapper">
             <mat-label>Umkreis: </mat-label>
@@ -67,24 +56,6 @@
               <input matSliderThumb formControlName="rangeValue" />
             </mat-slider>
           </div>
-
-          <mat-form-field>
-            <mat-label>Datumsbereich</mat-label>
-            <mat-date-range-input [rangePicker]="picker">
-              <input
-                matStartDate
-                formControlName="start"
-                placeholder="Start date"
-              />
-              <input matEndDate formControlName="end" placeholder="End date" />
-            </mat-date-range-input>
-            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle
-              matIconSuffix
-              [for]="picker"
-            ></mat-datepicker-toggle>
-            <mat-date-range-picker #picker></mat-date-range-picker>
-          </mat-form-field>
 
           <div class="example-button-container">
             <button mat-fab extended (click)="logData()">

@@ -110,7 +110,7 @@ export class MainpageComponent implements OnInit {
     rangeValue: new FormControl(25),
     start: new FormControl(),
     end: new FormControl(),
-    activityGroup: new FormControl(null)
+    activityGroup: new FormControl()
   });
 
   locationData : any = '';
@@ -122,28 +122,27 @@ export class MainpageComponent implements OnInit {
     this.userCity = await this.geoService.getAddress(this.userLatitude, this.userLongitude);
     console.log(this.userCity);    
     this.activityGroups = (data as any).activityGroups as ActivityGroup[];    
-    this.activityGroupOptions = this.activityForm.get('activityGroup')!.valueChanges.pipe(
+    this.activityGroupOptions = this.dataForm.get('activityGroup')!.valueChanges.pipe(
       startWith(''), 
       map(searchTerm => this._filterGroup(searchTerm || '')),
       startWith(this.activityGroups) 
     );
 }
 
-private _filterGroup(searchTerm: string): ActivityGroup[] {
-    const filterValue = searchTerm.toLowerCase();
+private _filterGroup(searchTerm: string | activityPair): ActivityGroup[] {      
     
-    if (!filterValue) {
+    if (!searchTerm || typeof searchTerm !== 'string') {
         return this.activityGroups;
     }
-
-    return this.activityGroups
+    const filterValue = searchTerm.toLowerCase();
+    return this.activityGroups        
         .map(group => ({
             categoryName: group.categoryName,
             categoryValue: group.categoryValue,
             types: group.types.filter(type => 
                 type.name.toLowerCase().includes(filterValue)
         )}))
-        .filter(group => group.types.length > 0);
+        .filter(group => group.types.length > 0);    
 }
 
   getLocation(): Promise<void> {
@@ -238,7 +237,6 @@ private _filterGroup(searchTerm: string): ActivityGroup[] {
   }
 
   async logData() {
-    /* debugger; */
     const range : number = this.dataForm.get('rangeValue')!.value!;
     this.activityTwin = this.dataForm.get('activityGroup')!.value!;
     const activity = this.findActivityValue(this.activityTwin.name);
