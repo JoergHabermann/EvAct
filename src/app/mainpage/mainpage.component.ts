@@ -237,6 +237,7 @@ private _filterGroup(searchTerm: string | activityPair): ActivityGroup[] {
   }
 
   async logData() {
+    this.selectedRoute = 0;
     const range : number = this.dataForm.get('rangeValue')!.value!;
     this.activityTwin = this.dataForm.get('activityGroup')!.value!;
     const activity = this.findActivityValue(this.activityTwin.name);

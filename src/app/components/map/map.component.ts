@@ -68,28 +68,30 @@ export class MapComponent implements OnInit, OnChanges {
       }
     }
 
-    if (changes['markers'] && this.map) {
+    if (changes['markers'] && this.map) {      
       if (this.markerLayer) {
         this.map.removeLayer(this.markerLayer);
       }
       this.addMarkers();
       if (this.markers.length > 0) {
         this.map.setZoom(this.mapService.setMapZoom(this.markers.at(-1)!));
-      }
+      }      
     }
 
     if (changes['zoomlat']?.currentValue || changes['zoomlong']?.currentValue) {
       this.map.setView([this.zoomlat, this.zoomlong], 12);
     }
 
-    if (changes['destid'] && this.destid != 0 && this.map) {      
-      this.updateRouteToMarker(this.destid);      
+    if (changes['destid'] && this.map) {        
+      this.destid === 0 ? this.removeRouting() : this.updateRouteToMarker(this.destid);      
     }
   }
 
-  private initRouting(): void {
+  initRouting(): void {
+    
     if (this.routingControl) {
       this.map.removeControl(this.routingControl);
+      this.map.closePopup();
     }
 
     this.routingControl = L.Routing.control({
@@ -128,21 +130,27 @@ export class MapComponent implements OnInit, OnChanges {
     this.markerLayer.addTo(this.map);
   }
 
-  private updateRouteToMarker(id: number): void {
-    const destmarker : Marker = this.markers.find((marker: Marker) => id === marker.id)!;
-    if (this.routingControl) {
-      const waypoints = [
-        L.latLng(this.latitude, this.longitude),
-        L.latLng(destmarker!.latitude, destmarker!.longitude),
-      ];
-      this.routingControl.setWaypoints(waypoints).route();
-    }    
-    let popup = L.popup()
-    .setLatLng(new L.LatLng(destmarker.latitude, destmarker.longitude))
+  updateRouteToMarker(id: number): void {
+    debugger;
+    const destmarker : Marker = this.markers.find((marker: Marker) => id === marker.id)!;    
+    const waypoints = [
+      L.latLng(this.latitude, this.longitude),
+      L.latLng(destmarker!.latitude, destmarker!.longitude),
+    ];
+    this.routingControl.setWaypoints(waypoints).route();      
+    L.popup().setLatLng(new L.LatLng(destmarker.latitude, destmarker.longitude))
     .setContent(destmarker.toolText)
     .openOn(this.map);
     this.map.setZoom(this.mapService.setMapZoom(destmarker));
   }
+
+  removeRouting() {    
+    if (this.routingControl) {
+      this.map.removeControl(this.routingControl);
+      
+    }
+  }
+
 
   ngOnDestroy() {
     if (this.routingControl) {
