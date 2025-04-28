@@ -248,6 +248,7 @@ private _filterGroup(searchTerm: string | activityPair): ActivityGroup[] {
     await this.fetchData(this.userLatitude,this.userLongitude,range,activity, this.activityTwin.category);     
     console.log(this.locationData);  
     this.pushMarkers();
+    
   }
 
   findActivityValue(key : string) : string {

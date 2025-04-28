@@ -83,7 +83,7 @@ export class MapComponent implements OnInit, OnChanges {
     }
 
     if (changes['destid'] && this.map) {        
-      this.destid === 0 ? this.removeRouting() : this.updateRouteToMarker(this.destid);      
+      this.destid === 0 ? this.initRouting() : this.updateRouteToMarker(this.destid);      
     }
   }
 
@@ -95,10 +95,7 @@ export class MapComponent implements OnInit, OnChanges {
     }
 
     this.routingControl = L.Routing.control({
-      waypoints: [
-        L.latLng(this.latitude, this.longitude),
-        L.latLng(this.markers[0]?.latitude, this.markers[0]?.longitude),
-      ],
+      waypoints: [],
       router: L.Routing.osrmv1({
         serviceUrl: 'https://router.project-osrm.org/route/v1',
       }),
@@ -130,8 +127,7 @@ export class MapComponent implements OnInit, OnChanges {
     this.markerLayer.addTo(this.map);
   }
 
-  updateRouteToMarker(id: number): void {
-    debugger;
+  updateRouteToMarker(id: number): void {    
     const destmarker : Marker = this.markers.find((marker: Marker) => id === marker.id)!;    
     const waypoints = [
       L.latLng(this.latitude, this.longitude),
@@ -146,8 +142,7 @@ export class MapComponent implements OnInit, OnChanges {
 
   removeRouting() {    
     if (this.routingControl) {
-      this.map.removeControl(this.routingControl);
-      
+      this.map.removeControl(this.routingControl);      
     }
   }
 
