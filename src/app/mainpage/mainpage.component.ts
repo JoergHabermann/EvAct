@@ -103,6 +103,7 @@ export class MainpageComponent implements OnInit {
   mapMarkers : Marker[] = [];
   selectedMarker = {} as Node;
   selectedRoute : number = 0;
+  result : boolean = false;
 
   activityGroups = {} as ActivityGroup[];
  
@@ -248,7 +249,7 @@ private _filterGroup(searchTerm: string | activityPair): ActivityGroup[] {
     await this.fetchData(this.userLatitude,this.userLongitude,range,activity, this.activityTwin.category);     
     console.log(this.locationData);  
     this.pushMarkers();
-    
+    this.switchSearchResultCards();
   }
 
   findActivityValue(key : string) : string {
@@ -282,6 +283,10 @@ private _filterGroup(searchTerm: string | activityPair): ActivityGroup[] {
 
   setRoute(id : number) {
     this.selectedRoute = id;
+  }
+
+  switchSearchResultCards() {
+    this.result ? this.result = false : this.result = true;
   }
 
 }

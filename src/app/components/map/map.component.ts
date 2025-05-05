@@ -57,7 +57,7 @@ export class MapComponent implements OnInit, OnChanges {
       .bindPopup('Du befindes Dich hier')
       .openPopup();
     this.addMarkers();
-    this.initRouting();
+    this.newRouting();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -74,8 +74,9 @@ export class MapComponent implements OnInit, OnChanges {
       }
       this.addMarkers();
       if (this.markers.length > 0) {
+        this.map.setView([this.latitude, this.longitude], this.zoom);
         this.map.setZoom(this.mapService.setMapZoom(this.markers.at(-1)!));
-      }      
+      }    
     }
 
     if (changes['zoomlat']?.currentValue || changes['zoomlong']?.currentValue) {
@@ -83,11 +84,11 @@ export class MapComponent implements OnInit, OnChanges {
     }
 
     if (changes['destid'] && this.map) {        
-      this.destid === 0 ? this.initRouting() : this.updateRouteToMarker(this.destid);      
+      this.destid === 0 ? this.newRouting() : this.updateRouteToMarker(this.destid);      
     }
   }
 
-  initRouting(): void {
+  newRouting(): void {
     
     if (this.routingControl) {
       this.map.removeControl(this.routingControl);
@@ -139,13 +140,6 @@ export class MapComponent implements OnInit, OnChanges {
     .openOn(this.map);
     this.map.setZoom(this.mapService.setMapZoom(destmarker));
   }
-
-  removeRouting() {    
-    if (this.routingControl) {
-      this.map.removeControl(this.routingControl);      
-    }
-  }
-
 
   ngOnDestroy() {
     if (this.routingControl) {
