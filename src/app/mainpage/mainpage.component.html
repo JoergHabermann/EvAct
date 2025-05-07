@@ -64,7 +64,12 @@
       </form>
     </mat-card-content>
   </mat-card>
-  <div class="result-card-wrapper" *ngIf="result">      
+  <div class="result-card-wrapper" *ngIf="result">   
+    <div class="new-search">
+      <button mat-fab (click)="switchSearchResultCards()">
+        <mat-icon>search</mat-icon>
+      </button>   
+    </div>   
       <mat-card
       appearance="raised"
       class="data-result-wrapper"
@@ -117,11 +122,9 @@
             <button mat-raised-button>Einplanen</button>
           </div>
         </div>
-      </mat-expansion-panel>      
-      <button mat-fab (click)="switchSearchResultCards()">
-        <mat-icon>delete</mat-icon>
-      </button>      
+      </mat-expansion-panel>        
     </mat-card>
+    
   </div>
   <app-map
     [latitude]="this.userLatitude"

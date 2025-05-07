@@ -1,7 +1,7 @@
 @use "../../styles.scss" as *;
 
 main {
-  @include flexParams();
+  @include flexParams($direction:column);
   width: 90%;
   max-width: 1400px;
   padding: 50px;
@@ -74,8 +74,10 @@ h1 {
 }
 
 .result-card-wrapper {
+  position: relative;
   height: 500px;
   overflow-y: auto; 
+  width: 500px;
 }
 
 mat-expansion-panel {
@@ -88,4 +90,11 @@ mat-expansion-panel {
 
 .position-small {
   height: 40px;
+}
+
+.new-search {
+  position: sticky;    
+  z-index: 1;
+  top: 80%;  
+  margin-left: 80%;
 }
