@@ -1,13 +1,10 @@
 <header></header>
 
 <main>  
-  <mat-card appearance="raised" *ngIf="!this.result">
+  <mat-card appearance="raised" *ngIf="!this.result" class="search-card-wrapper">
     <mat-card-content>
-      <form [formGroup]="dataForm">
-        <h1>EvAct Suche</h1>
-
-        <h2>Deine Position:</h2>
-        <div class="center">
+      <form [formGroup]="dataForm">        
+        <!-- <div class="center">
           <img
             class="position-small"
             src="./assets/img/posi.png"
@@ -16,9 +13,9 @@
           {{
             this.userCity?.address.road + ", " + this.userCity?.address.city
           }}
-        </div>
-        
-        <mat-form-field>
+        </div> -->
+        <div class="autocomplete-wrapper">
+          <mat-form-field>
           <mat-label>Aktivitäten Suche</mat-label>
           <input type="text"
                   matInput
@@ -39,7 +36,15 @@
               </mat-optgroup>
             }
           </mat-autocomplete>
-        </mat-form-field>         
+          </mat-form-field> 
+
+          <div class="search-button-container">
+            <button mat-fab (click)="logData()">
+              <mat-icon>search</mat-icon>            
+            </button>
+          </div>
+        </div>
+                
 
         <div class="range-wrapper">
           <mat-label>Umkreis: </mat-label>
@@ -54,77 +59,72 @@
             <input matSliderThumb formControlName="rangeValue" />
           </mat-slider>
         </div>
-
-        <div class="example-button-container">
-          <button mat-fab extended (click)="logData()">
-            <mat-icon>search</mat-icon>
-            Suchen
-          </button>
-        </div>
+        
       </form>
     </mat-card-content>
   </mat-card>
   <div class="result-card-wrapper" *ngIf="result">   
-    <div class="new-search">
-      <button mat-fab (click)="switchSearchResultCards()">
-        <mat-icon>search</mat-icon>
-      </button>   
-    </div>   
-      <mat-card
-      appearance="raised"
-      class="data-result-wrapper"
-      *ngIf="locationData"
-      >
-      <mat-expansion-panel
-        [expanded]="node === selectedMarker"
-        class="wide"
-        *ngFor="let node of locationData"
-        (opened)="pushNominatim(node)"
-        hideToggle="true"
-      >
-        <mat-expansion-panel-header>
-          <mat-panel-title class="node-card">
-            <div>{{ "Entfernung: " + node.distance + " km " }}</div>
+    <div class="result-relative-wrapper">
+      <div class="new-search">
+        <button mat-fab (click)="switchSearchResultCards()">
+          <mat-icon>search</mat-icon>
+        </button>   
+      </div>   
+        <mat-card
+        appearance="raised"
+        class="data-result-wrapper"
+        *ngIf="locationData"
+        >
+        <mat-expansion-panel
+          [expanded]="node === selectedMarker"
+          class="wide"
+          *ngFor="let node of locationData"
+          (opened)="pushNominatim(node)"
+          hideToggle="true"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title class="node-card">
+              <div>{{ "Entfernung: " + node.distance + " km " }}</div>
+              <div>
+                {{
+                  node.tags.name
+                    ? node.tags.name.toUpperCase()
+                    : this.category.toUpperCase()
+                }}
+              </div>              
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="panel-info-wrapper">
             <div>
-              {{
-                node.tags.name
-                  ? node.tags.name.toUpperCase()
-                  : this.category.toUpperCase()
-              }}
-            </div>              
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <div class="panel-info-wrapper">
-          <div>
-            <div>{{ node.road }}{{ " " }}{{ node.house_number }}</div>
-            <div>{{ node.postcode }}</div>
-            <div>{{ node.town }}</div>
-            <div>{{ node.suburb }}</div>
+              <div>{{ node.road }}{{ " " }}{{ node.house_number }}</div>
+              <div>{{ node.postcode }}</div>
+              <div>{{ node.town }}</div>
+              <div>{{ node.suburb }}</div>
+            </div>
+            <div>
+              <div>{{ node.tags.opening_hours }}</div>
+            </div>
+            <div>
+              <a *ngIf="node.tags.phone" href="{{ 'tel:+49' + node.tags.phone }}"
+                >Call +49 {{ node.tags.phone }}</a
+              >
+              <a href="{{ node.tags.website }}">{{ node.tags.website }}</a>
+            </div>
+            <div>
+              <button
+                mat-raised-button
+                (click)="sendZoomCoords(node.lat, node.lon)"
+                >Zur Karte
+              </button>
+              <button 
+                (click)="setRoute(node.id)"
+                mat-raised-button>Route anzeigen
+              </button>            
+            </div>
           </div>
-          <div>
-            <div>{{ node.tags.opening_hours }}</div>
-          </div>
-          <div>
-            <a *ngIf="node.tags.phone" href="{{ 'tel:+49' + node.tags.phone }}"
-              >Call +49 {{ node.tags.phone }}</a
-            >
-            <a href="{{ node.tags.website }}">{{ node.tags.website }}</a>
-          </div>
-          <div>
-            <button
-              mat-raised-button
-              (click)="sendZoomCoords(node.lat, node.lon)"
-              >Zur Karte
-            </button>
-            <button 
-              (click)="setRoute(node.id)"
-              mat-raised-button>Route anzeigen</button>
-            <button mat-raised-button>Einplanen</button>
-          </div>
-        </div>
-      </mat-expansion-panel>        
-    </mat-card>
-    
+        </mat-expansion-panel>        
+      </mat-card>
+    </div>
   </div>
   <app-map
     [latitude]="this.userLatitude"
