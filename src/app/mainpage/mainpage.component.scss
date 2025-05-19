@@ -5,9 +5,11 @@ main {
   height: 100%;
 }
 
-/* mat-card {
-  padding: 20px;
-} */
+mat-card-content {
+  padding: 0;
+  /* padding-top: 0 !important; */
+  padding-bottom: 0 !important;
+}
 
 mat-slider {
   width: 60%;
@@ -28,15 +30,20 @@ mat-mdc-card {
   border-radius: 20% !important;
 }
 
+mat-icon {
+  transform: scale(120%);
+}
+
 .autocomplete-wrapper {
   position: relative;
+  width: 280px;
 }
 
 .search-button-container {
   position: absolute;
   right: 0;
   top: 0;  
-  transform: scale(70%);
+  transform: scale(90%);
 }
 
 .center {
@@ -66,8 +73,7 @@ h1 {
 }
 
 .range-wrapper {
-  @include flexParams();
-  /* gap: 16px; */
+  @include flexParams();  
   width: 100%;
   >mat-label {
     font-size: 16px;
@@ -91,29 +97,29 @@ h1 {
 
 .data-result-wrapper {
   @include flexParams($direction:column);
-  width: 90%;
   gap: 8px;   
-}
-
-.result-card-wrapper {
-  position: absolute;
-  z-index: 2;
-  left: 5%;
-  top: 5%;
-  height: 500px;
-  /* overflow-y: auto;  */
-  width: 500px;
 }
 
 .search-card-wrapper {
   position: absolute;
   z-index: 2;
-  left: 5%;
-  top: 5%;
+  left: 12px;
+  top: 100px;
+  width: 296px;
+}
+
+.result-card-wrapper {
+  position: absolute;
+  z-index: 2;
+  left: 12px;
+  top: 100px;
+  max-height: 500px;  
 }
 
 .result-relative-wrapper {
   position: relative;
+  max-height: 500px;
+  overflow-y: scroll;  
 }
 
 mat-expansion-panel {

@@ -3,17 +3,7 @@
 <main>  
   <mat-card appearance="raised" *ngIf="!this.result" class="search-card-wrapper">
     <mat-card-content>
-      <form [formGroup]="dataForm">        
-        <!-- <div class="center">
-          <img
-            class="position-small"
-            src="./assets/img/posi.png"
-            alt="location"
-          />
-          {{
-            this.userCity?.address.road + ", " + this.userCity?.address.city
-          }}
-        </div> -->
+      <form [formGroup]="dataForm">                
         <div class="autocomplete-wrapper">
           <mat-form-field>
           <mat-label>Aktivitäten Suche</mat-label>
@@ -69,7 +59,7 @@
         <button mat-fab (click)="switchSearchResultCards()">
           <mat-icon>search</mat-icon>
         </button>   
-      </div>   
+      </div>
         <mat-card
         appearance="raised"
         class="data-result-wrapper"
@@ -123,7 +113,7 @@
             </div>
           </div>
         </mat-expansion-panel>        
-      </mat-card>
+      </mat-card>       
     </div>
   </div>
   <app-map
