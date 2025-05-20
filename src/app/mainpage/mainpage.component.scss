@@ -97,7 +97,9 @@ h1 {
 
 .data-result-wrapper {
   @include flexParams($direction:column);
-  gap: 8px;   
+  gap: 8px;  
+  overflow-y: auto;  
+  max-height: 500px;  
 }
 
 .search-card-wrapper {
@@ -112,14 +114,12 @@ h1 {
   position: absolute;
   z-index: 2;
   left: 12px;
-  top: 100px;
-  max-height: 500px;  
+  top: 100px;     
 }
 
 .result-relative-wrapper {
-  position: relative;
-  max-height: 500px;
-  overflow-y: scroll;  
+  position: relative;  
+  @include flexParams($align:flex-start);       
 }
 
 mat-expansion-panel {
@@ -127,7 +127,7 @@ mat-expansion-panel {
 }
 
 .data-result-card {
-  width: 100%;
+  max-width: 500px;  
 }
 
 .position-small {
@@ -135,7 +135,7 @@ mat-expansion-panel {
 }
 
 .new-search {
-  position: sticky;    
+  position: absolute;
   z-index: 1;
   top: 80%;  
   margin-left: 80%;
