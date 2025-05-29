@@ -7,7 +7,6 @@ main {
 
 mat-card-content {
   padding: 0;
-  /* padding-top: 0 !important; */
   padding-bottom: 0 !important;
 }
 
@@ -53,10 +52,6 @@ mat-icon {
   }
 }
 
-.wide {
-  width: 100%;
-}
-
 .node-card {
   @include flexParams($align: center,$justify: space-between,$direction: row);
   
@@ -96,7 +91,7 @@ h1 {
 }
 
 .data-result-wrapper {
-  @include flexParams($direction:column);
+  @include flexParams($direction:column, $justify: flex-start);
   gap: 8px;  
   overflow-y: auto;  
   max-height: 500px;  
@@ -107,7 +102,7 @@ h1 {
   z-index: 2;
   left: 12px;
   top: 100px;
-  width: 296px;
+  width: 350px;
 }
 
 .result-card-wrapper {
@@ -136,7 +131,28 @@ mat-expansion-panel {
 
 .new-search {
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   top: 80%;  
-  margin-left: 80%;
+  margin-left: 70%;
+}
+
+.button-wrapper {
+  @include flexParams();
+  gap: 16px;
+}
+
+.panel-result-wrapper {
+  width: 300px;
+  @include flexParams($direction: column);
+  gap: 8px;
+  padding: 8px 8px 0px 8px;
+}
+
+@media only screen and (max-width: 400px) {
+  .search-card-wrapper {
+    width: 296px;
+  }
+  .result-card-wrapper {
+    width: 300px;
+  }
 }

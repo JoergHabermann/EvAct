@@ -68,16 +68,15 @@
         </button>
       </div>
       <mat-card
-        appearance="raised"
+        
         class="data-result-wrapper"
         *ngIf="locationData"
       >
         <mat-card
-          class="wide"
+          class="panel-result-wrapper"
           *ngFor="let node of locationData"
           (opened)="pushNominatim(node)"
         >
-          <div>{{ "Entfernung: " + node.distance + " km " }}</div>
           <div>
             {{
               node.tags.name
@@ -85,6 +84,7 @@
                 : this.category.toUpperCase()
             }}
           </div>
+          <div>{{ "Entfernung: " + node.distance + " km " }}</div>
           <div >
             <div>
               <div>{{ node.road }}{{ " " }}{{ node.house_number }}</div>
@@ -103,7 +103,7 @@
               >
               <a href="{{ node.tags.website }}">{{ node.tags.website }}</a>
             </div>
-            <div>
+            <div class="button-wrapper">
               <button
                 mat-raised-button
                 (click)="sendZoomCoords(node.lat, node.lon)"
