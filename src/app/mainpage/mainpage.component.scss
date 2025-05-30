@@ -148,6 +148,11 @@ mat-expansion-panel {
   padding: 8px 8px 0px 8px;
 }
 
+.no-result {
+  font-size: 16px;
+  color: #673ab7;
+}
+
 @media only screen and (max-width: 400px) {
   .search-card-wrapper {
     width: 296px;

@@ -104,6 +104,7 @@ export class MainpageComponent implements OnInit {
   selectedMarker = {} as Node;
   selectedRoute : number = 0;
   result : boolean = false;
+  noResult : boolean = false;
 
   activityGroups = {} as ActivityGroup[];
  
@@ -130,7 +131,7 @@ export class MainpageComponent implements OnInit {
     );
 }
 
-private _filterGroup(searchTerm: string | activityPair): ActivityGroup[] {      
+private _filterGroup(searchTerm: string | activityPair): ActivityGroup[] {  
     
     if (!searchTerm || typeof searchTerm !== 'string') {
         return this.activityGroups;
@@ -230,26 +231,36 @@ private _filterGroup(searchTerm: string | activityPair): ActivityGroup[] {
     object.sort((a, b) => (a.distance < b.distance ? -1 : 1))
   }
 
-  logDates() {
+  /* logDates() {
     const startDate = this.dataForm.get('start')?.value;
     const endDate = this.dataForm.get('end')?.value;
     console.log(startDate);
     console.log(endDate);
+  } */
+
+  async logData() {      
+    let activity : string = '';
+    this.selectedRoute = 0;    
+    const range : number = this.dataForm.get('rangeValue')!.value!;
+    this.activityTwin = this.dataForm.get('activityGroup')!.value;    
+    if (this.activityTwin) {
+      activity = this.findActivityValue(this.activityTwin.name);    
+      /* this.logDates(); */
+      console.log(range);
+      console.log(activity);  
+      console.log(this.activityTwin.category);     
+      await this.fetchData(this.userLatitude,this.userLongitude,range,activity, this.activityTwin.category);     
+      console.log(this.locationData);  
+      this.checkResult();             
+    }
+    this.locationData.length ? this.noResult = false : this.noResult = true;
   }
 
-  async logData() {
-    this.selectedRoute = 0;
-    const range : number = this.dataForm.get('rangeValue')!.value!;
-    this.activityTwin = this.dataForm.get('activityGroup')!.value!;
-    const activity = this.findActivityValue(this.activityTwin.name);
-    this.logDates();
-    console.log(range);
-    console.log(activity);  
-    console.log(this.activityTwin.category);      
-    await this.fetchData(this.userLatitude,this.userLongitude,range,activity, this.activityTwin.category);     
-    console.log(this.locationData);  
-    this.pushMarkers();
-    this.switchSearchResultCards();
+  checkResult() {
+    if (this.locationData.length) {
+      this.switchSearchResultCards();  
+      this.pushMarkers(); 
+    }
   }
 
   findActivityValue(key : string) : string {

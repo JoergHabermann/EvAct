@@ -6,13 +6,23 @@
   background: white;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  margin-left: 54px !important;
+  left: 54px !important;
+}
+
+:host::ng-deep .leaflet-right{
+  left: 0 !important;
+  right: unset !important;
+}
+
+:host::ng-deep .leaflet-bottom {
+  right: 0 !important;
 }
 
 :host::ng-deep .leaflet-routing-alt {    
     max-height: 80px;
     overflow: hidden; 
     background: white;    
+    max-width: 256px;
 } 
 
 :host::ng-deep .leaflet-routing-alt-minimized {

@@ -34,9 +34,10 @@
                 }
               </mat-optgroup>
               }
-            </mat-autocomplete>
+            </mat-autocomplete>            
           </mat-form-field>
-
+          <br>
+          <span class="no-result" *ngIf="noResult">Leider keine Treffer !</span>
           <div class="search-button-container">
             <button mat-fab (click)="logData()">
               <mat-icon>search</mat-icon>
