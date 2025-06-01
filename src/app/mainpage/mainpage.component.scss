@@ -95,6 +95,7 @@ h1 {
   gap: 8px;  
   overflow-y: auto;  
   max-height: 500px;  
+  width: 100%;
 }
 
 .search-card-wrapper {
@@ -105,16 +106,14 @@ h1 {
   width: 350px;
 }
 
-.result-card-wrapper {
-  position: absolute;
-  z-index: 2;
-  left: 12px;
-  top: 100px;     
+.result-card-wrapper {    
+  width: 350px; 
 }
 
 .result-relative-wrapper {
   position: relative;  
-  @include flexParams($align:flex-start);       
+  @include flexParams($align:flex-start);     
+  width: 100%;  
 }
 
 mat-expansion-panel {
@@ -129,11 +128,11 @@ mat-expansion-panel {
   height: 40px;
 }
 
-.new-search {
-  position: absolute;
-  z-index: 2;
-  top: 80%;  
-  margin-left: 70%;
+.expand {
+  position: relative;
+  z-index: 10;
+  top: 10px;
+  margin-left: 257px;
 }
 
 .button-wrapper {
@@ -142,10 +141,10 @@ mat-expansion-panel {
 }
 
 .panel-result-wrapper {
-  width: 300px;
+  width: 100%;
   @include flexParams($direction: column);
   gap: 8px;
-  padding: 8px 8px 0px 8px;
+  padding-top: 8px;
 }
 
 .no-result {
@@ -153,11 +152,32 @@ mat-expansion-panel {
   color: #673ab7;
 }
 
+.expand-close {
+  top: 250px !important;
+}
+
+.expand-wrapper {
+  position: absolute;
+  z-index: 2;
+  left: 12px;
+  top: 237px;    
+  width: 350px;
+}
+
 @media only screen and (max-width: 400px) {
   .search-card-wrapper {
     width: 296px;
   }
-  .result-card-wrapper {
-    width: 300px;
+  .result-card-wrapper, .expand-wrapper {
+    width: 296px;
+  }
+  .expand {    
+    margin-left: 233px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .data-result-wrapper {
+    max-height: 350px;
   }
 }

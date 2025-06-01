@@ -22,7 +22,7 @@
     max-height: 80px;
     overflow: hidden; 
     background: white;    
-    max-width: 256px;
+    max-width: 305px;
 } 
 
 :host::ng-deep .leaflet-routing-alt-minimized {
@@ -31,6 +31,14 @@
   overflow: hidden;
   padding: 0;  
 } 
+
+@media only screen and (max-width: 400px) {
+  :host::ng-deep .leaflet-routing-alt {        
+    max-width: 252px;
+} 
+}
+
+
 
 
 

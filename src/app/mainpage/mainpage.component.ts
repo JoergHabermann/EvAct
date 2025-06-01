@@ -10,7 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { MatButtonModule} from '@angular/material/button';
 import { MatIconModule} from '@angular/material/icon';
-import { AsyncPipe, CommonModule, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, CommonModule, NgClass, NgFor, NgIf } from '@angular/common';
 import { Node } from '../models/node.model';
 import { Marker } from '../models/marker.model';
 import { OnInit } from '@angular/core';
@@ -67,7 +67,7 @@ export const _filter = (opt: string[], value: string): string[] => {
     MatButtonModule,
     MatIconModule,
     NgIf,
-    NgFor,
+    NgFor,    
     CommonModule,
     MatExpansionModule,
     MapComponent,  
@@ -91,8 +91,7 @@ export class MainpageComponent implements OnInit {
   
   readonly panelOpenState = signal(false);
   
-  activityData : any;
-  searchType : string = '';
+  activityData : any;  
   userLatitude : number = 0;
   userLongitude : number = 0;
   zoomlat : number = 0;
@@ -121,9 +120,8 @@ export class MainpageComponent implements OnInit {
 
   async ngOnInit() {    
     await this.getLocation();    
-    this.userCity = await this.geoService.getAddress(this.userLatitude, this.userLongitude);
-    console.log(this.userCity);    
-    this.activityGroups = (data as any).activityGroups as ActivityGroup[];    
+    this.userCity = await this.geoService.getAddress(this.userLatitude, this.userLongitude);       
+    this.activityGroups = (data as any).activityGroups as ActivityGroup[];      
     this.activityGroupOptions = this.dataForm.get('activityGroup')!.valueChanges.pipe(
       startWith(''), 
       map(searchTerm => this._filterGroup(searchTerm || '')),
@@ -153,8 +151,7 @@ private _filterGroup(searchTerm: string | activityPair): ActivityGroup[] {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             this.userLatitude = position.coords.latitude;
-            this.userLongitude = position.coords.longitude;
-            console.log("latitude: " + this.userLatitude, "longitude " + this.userLongitude);
+            this.userLongitude = position.coords.longitude;            
             resolve();
           },
           (error) => {
@@ -229,37 +226,45 @@ private _filterGroup(searchTerm: string | activityPair): ActivityGroup[] {
 
   sortLocations(object : Node[]) {
     object.sort((a, b) => (a.distance < b.distance ? -1 : 1))
-  }
+  }  
 
-  /* logDates() {
-    const startDate = this.dataForm.get('start')?.value;
-    const endDate = this.dataForm.get('end')?.value;
-    console.log(startDate);
-    console.log(endDate);
-  } */
-
-  async logData() {      
-    let activity : string = '';
+  async logData() {     
+    this.activityTwin = {} as activityPair;
     this.selectedRoute = 0;    
     const range : number = this.dataForm.get('rangeValue')!.value!;
-    this.activityTwin = this.dataForm.get('activityGroup')!.value;    
+    const userInput = this.dataForm.get('activityGroup')!.value;
+    if ( typeof userInput == 'string' && userInput != '') {      
+      this.activityTwin = this.searchByTyping(userInput);
+    } else this.activityTwin = userInput;                  
     if (this.activityTwin) {
-      activity = this.findActivityValue(this.activityTwin.name);    
-      /* this.logDates(); */
-      console.log(range);
-      console.log(activity);  
-      console.log(this.activityTwin.category);     
-      await this.fetchData(this.userLatitude,this.userLongitude,range,activity, this.activityTwin.category);     
-      console.log(this.locationData);  
-      this.checkResult();             
-    }
-    this.locationData.length ? this.noResult = false : this.noResult = true;
+      const activity : string = this.findActivityValue(this.activityTwin.name);
+      if (activity) { 
+        await this.fetchData(this.userLatitude, this.userLongitude, range, activity, this.activityTwin.category);
+        this.category = this.activityTwin.name;  
+      }
+    }    
+    this.checkResult();     
   }
 
+  searchByTyping(userInput : string) : activityPair {        
+    let actName : string = userInput;  
+    let actCategory : string = '';  
+    actName = actName.charAt(0).toUpperCase() + actName.toLowerCase().slice(1);
+    
+    this.activityGroups.forEach(category => {
+      const foundCategory = category.types.find(type => type.name === actName);
+      if (foundCategory) {
+        actCategory = category.categoryValue;
+      }
+    });
+    return {name: actName,category: actCategory};
+  } 
+
   checkResult() {
-    if (this.locationData.length) {
-      this.switchSearchResultCards();  
+    this.locationData.length ? this.noResult = false : this.noResult = true;
+    if (this.locationData.length) {        
       this.pushMarkers(); 
+      this.result = true;
     }
   }
 
@@ -270,7 +275,7 @@ private _filterGroup(searchTerm: string | activityPair): ActivityGroup[] {
         return foundType.value;
       }
     }
-    return key;
+    return '';
   }
 
   displayActivityName (type : activityPair): string {
@@ -296,10 +301,9 @@ private _filterGroup(searchTerm: string | activityPair): ActivityGroup[] {
     this.selectedRoute = id;
   }
 
-  switchSearchResultCards() {
+  switchResultPanel() {
     this.result ? this.result = false : this.result = true;
   }
-
 }
 
 

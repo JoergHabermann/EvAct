@@ -2,8 +2,7 @@
 
 <main>
   <mat-card
-    appearance="raised"
-    *ngIf="!this.result"
+    appearance="raised"    
     class="search-card-wrapper"
   >
     <mat-card-content>
@@ -61,15 +60,9 @@
       </form>
     </mat-card-content>
   </mat-card>
-  <div class="result-card-wrapper" *ngIf="result">
-    <div class="result-relative-wrapper">
-      <div class="new-search">
-        <button mat-fab (click)="switchSearchResultCards()">
-          <mat-icon>search</mat-icon>
-        </button>
-      </div>
-      <mat-card
-        
+  <div class="expand-wrapper">
+    <div class="result-card-wrapper" *ngIf="result">           
+      <mat-card        
         class="data-result-wrapper"
         *ngIf="locationData"
       >
@@ -116,9 +109,13 @@
               </button>
             </div>
           </div>
-        </mat-card>
-        
-      </mat-card>
+        </mat-card>        
+      </mat-card>      
+    </div>
+    <div class="expand" *ngIf="this.locationData.length">
+          <button mat-fab (click)="switchResultPanel()">
+            <mat-icon>expand</mat-icon>
+          </button>
     </div>
   </div>
   <app-map

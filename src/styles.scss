@@ -19,3 +19,13 @@ $prime-color : #673AB7;
   @include flexParams();
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $prime-color;
+  border-radius: 10px;
+}
+
