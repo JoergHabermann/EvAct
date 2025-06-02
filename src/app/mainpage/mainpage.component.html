@@ -1,10 +1,7 @@
 <header></header>
 
 <main>
-  <mat-card
-    appearance="raised"    
-    class="search-card-wrapper"
-  >
+  <mat-card appearance="raised" class="search-card-wrapper">
     <mat-card-content>
       <form [formGroup]="dataForm">
         <div class="autocomplete-wrapper">
@@ -33,9 +30,9 @@
                 }
               </mat-optgroup>
               }
-            </mat-autocomplete>            
+            </mat-autocomplete>
           </mat-form-field>
-          <br>
+          <br />
           <span class="no-result" *ngIf="noResult">Leider keine Treffer !</span>
           <div class="search-button-container">
             <button mat-fab (click)="logData()">
@@ -61,17 +58,14 @@
     </mat-card-content>
   </mat-card>
   <div class="expand-wrapper">
-    <div class="result-card-wrapper" *ngIf="result">           
-      <mat-card        
-        class="data-result-wrapper"
-        *ngIf="locationData"
-      >
+    <div class="result-card-wrapper" *ngIf="result">
+      <mat-card class="data-result-wrapper" *ngIf="locationData">
         <mat-card
           class="panel-result-wrapper"
           *ngFor="let node of locationData"
           (opened)="pushNominatim(node)"
         >
-          <div>
+          <div class="location-title">
             {{
               node.tags.name
                 ? node.tags.name.toUpperCase()
@@ -79,7 +73,7 @@
             }}
           </div>
           <div>{{ "Entfernung: " + node.distance + " km " }}</div>
-          <div >
+          <div>
             <div>
               <div>{{ node.road }}{{ " " }}{{ node.house_number }}</div>
               <div>{{ node.postcode }}</div>
@@ -95,6 +89,8 @@
                 href="{{ 'tel:+49' + node.tags.phone }}"
                 >Call +49 {{ node.tags.phone }}</a
               >
+            </div>
+            <div>
               <a href="{{ node.tags.website }}">{{ node.tags.website }}</a>
             </div>
             <div class="button-wrapper">
@@ -109,13 +105,13 @@
               </button>
             </div>
           </div>
-        </mat-card>        
-      </mat-card>      
+        </mat-card>
+      </mat-card>
     </div>
     <div class="expand" *ngIf="this.locationData.length">
-          <button mat-fab (click)="switchResultPanel()">
-            <mat-icon>expand</mat-icon>
-          </button>
+      <button mat-fab (click)="switchResultPanel()">
+        <mat-icon>expand</mat-icon>
+      </button>
     </div>
   </div>
   <app-map

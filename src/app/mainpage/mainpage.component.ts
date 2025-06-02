@@ -21,7 +21,7 @@ import { MapComponent } from '../components/map/map.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import {Observable, of} from 'rxjs';
 import {startWith, map} from 'rxjs/operators';
-import * as data from '../../assets/data/activities.json'
+import * as data from '../../assets/data/locations.json'
 
 
 export interface ActivityType {

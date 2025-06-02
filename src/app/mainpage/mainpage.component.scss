@@ -93,9 +93,10 @@ h1 {
 .data-result-wrapper {
   @include flexParams($direction:column, $justify: flex-start);
   gap: 8px;  
-  overflow-y: auto;  
+  overflow-y: auto; 
+  overflow-x: hidden;
   max-height: 500px;  
-  width: 100%;
+  width: 100%;  
 }
 
 .search-card-wrapper {
@@ -162,6 +163,10 @@ mat-expansion-panel {
   left: 12px;
   top: 237px;    
   width: 350px;
+}
+
+.location-title {
+  font-weight: 600;
 }
 
 @media only screen and (max-width: 400px) {
