@@ -42,10 +42,7 @@
         {"name": "Fast Food", "value": "fast_food"},
         {"name": "Café", "value": "cafe"},
         {"name": "Kneipe", "value": "pub"},
-        {"name": "Bar", "value": "bar"},
-        {"name": "Bibliothek", "value": "library"},
-        {"name": "Museum", "value": "museum"},
-        {"name": "Galerie", "value": "gallery"},
+        {"name": "Bar", "value": "bar"},        
         {"name": "Touristeninformation", "value": "information"},
         {"name": "Planetarium", "value": "planetarium"},
         {"name": "Therme", "value": "spa"},
@@ -144,9 +141,7 @@
         {"name": "Campingplatz", "value": "camp_site"},
         {"name": "Caravanstellplatz", "value": "caravan_site"},
         {"name": "Gästehaus", "value": "guest_house"},
-        {"name": "Hostel", "value": "hostel"},
-        {"name": "Hotel", "value": "hotel"},
-        {"name": "Ferienwohnung", "value": "apartment"},
+        {"name": "Hostel", "value": "hostel"},         
         {"name": "Wanderhütte", "value": "alpine_hut"},
         {"name": "Touristenroute", "value": "route"},
         {"name": "Führung", "value": "guidepost"}
@@ -158,11 +153,9 @@
       "types": [
         {"name": "Strand", "value": "beach"},
         {"name": "Höhle", "value": "cave_entrance"},
-        {"name": "Felsformation", "value": "rock"},
-        {"name": "Wasserfall", "value": "waterfall"},
+        {"name": "Felsformation", "value": "rock"},        
         {"name": "Berggipfel", "value": "peak"},
-        {"name": "Wald", "value": "wood"},
-        {"name": "See", "value": "lake"},
+        {"name": "Wald", "value": "wood"},        
         {"name": "Quelle", "value": "spring"},
         {"name": "Schlucht", "value": "gorge"},
         {"name": "Düne", "value": "dune"},
@@ -178,9 +171,7 @@
         {"name": "Ruine", "value": "ruins"},
         {"name": "Denkmal", "value": "monument"},
         {"name": "Archäologische Stätte", "value": "archaeological_site"},
-        {"name": "Historisches Gebäude", "value": "building"},
-        {"name": "Kirche", "value": "church"},
-        {"name": "Friedhof", "value": "cemetery"},
+        {"name": "Historisches Gebäude", "value": "building"}, 
         {"name": "Schloss", "value": "manor"},
         {"name": "Mühle", "value": "mill"},
         {"name": "Wrack", "value": "wreck"},
@@ -204,8 +195,7 @@
       "types": [
         {"name": "Flughafen", "value": "aerodrome"},
         {"name": "Seilbahn", "value": "cable_car"},
-        {"name": "Flugplatz", "value": "airfield"},
-        {"name": "Hubschrauberlandeplatz", "value": "helipad"}
+        {"name": "Flugplatz", "value": "airfield"}        
       ]
     },
     {
@@ -262,21 +252,16 @@
       "types": [
         {"name": "Bahnstation", "value": "station"},
         {"name": "Haltestelle", "value": "halt"},
-        {"name": "Tramhaltestelle", "value": "tram_stop"},
-        {"name": "Bahnübergang", "value": "level_crossing"},
-        {"name": "Eisenbahnbrücke", "value": "bridge"},
-        {"name": "Eisenbahntunnel", "value": "tunnel"}
+        {"name": "Tramhaltestelle", "value": "tram_stop"}        
       ]
     },
     {
       "categoryName": "Gesundheit",
       "categoryValue": "healthcare",
-      "types": [
-        {"name": "Krankenhaus", "value": "hospital"},
+      "types": [        
         {"name": "Klinik", "value": "clinic"},
         {"name": "Arztpraxis", "value": "doctor"},
-        {"name": "Zahnarzt", "value": "dentist"},
-        {"name": "Apotheke", "value": "pharmacy"},
+        {"name": "Zahnarzt", "value": "dentist"},        
         {"name": "Optiker", "value": "optometrist"},
         {"name": "Gesundheitszentrum", "value": "centre"},
         {"name": "Notaufnahme", "value": "emergency_ward"}
@@ -286,7 +271,6 @@
       "categoryName": "Bildung",
       "categoryValue": "amenity",
       "types": [
-        {"name": "Schule", "value": "school"},
         {"name": "Universität", "value": "university"},
         {"name": "Kindergarten", "value": "kindergarten"},
         {"name": "Bibliothek", "value": "library"},
@@ -321,8 +305,7 @@
     {
       "categoryName": "Religion",
       "categoryValue": "amenity",
-      "types": [
-        {"name": "Kirche", "value": "place_of_worship"},
+      "types": [        
         {"name": "Moschee", "value": "mosque"},
         {"name": "Synagoge", "value": "synagogue"},
         {"name": "Tempel", "value": "temple"},
@@ -391,8 +374,7 @@
       "types": [
         {"name": "See", "value": "lake"},
         {"name": "Teich", "value": "pond"},
-        {"name": "Stausee", "value": "reservoir"},
-        {"name": "Fluss", "value": "river"}
+        {"name": "Stausee", "value": "reservoir"}        
       ]
     },
     {
@@ -401,9 +383,7 @@
       "types": [
         {"name": "Versicherung", "value": "insurance"},
         {"name": "Rechtsanwalt", "value": "lawyer"},
-        {"name": "Reisebüro", "value": "travel_agent"},
-        {"name": "Immobilienbüro", "value": "estate_agent"},
-        {"name": "Regierungsbüro", "value": "government"}
+        {"name": "Reisebüro", "value": "travel_agent"}        
       ]
     },
     {
@@ -423,8 +403,7 @@
       "categoryValue": "public_transport",
       "types": [
         {"name": "Haltestelle", "value": "stop_position"},
-        {"name": "Station", "value": "station"},
-        {"name": "Plattform", "value": "platform"},
+        {"name": "Station", "value": "station"},        
         {"name": "Ticketautomat", "value": "ticket_machine"}
       ]
     },    
@@ -433,8 +412,7 @@
       "categoryValue": "boundary",
       "types": [
         {"name": "Nationalpark", "value": "national_park"},
-        {"name": "Schutzgebiet", "value": "protected_area"},
-        {"name": "Gemeindegrenze", "value": "administrative"}
+        {"name": "Schutzgebiet", "value": "protected_area"}        
       ]
     },    
     {
@@ -452,8 +430,7 @@
       "categoryValue": "tourism",
       "types": [
         {"name": "Museum", "value": "museum"},
-        {"name": "Galerie", "value": "gallery"},
-        {"name": "Denkmal", "value": "artwork"},
+        {"name": "Galerie", "value": "gallery"},       
         {"name": "Historische Stätte", "value": "archaeological_site"}
       ]
     }     

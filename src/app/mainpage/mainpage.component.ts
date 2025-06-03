@@ -44,14 +44,6 @@ export interface ActivitiesData {
   activityGroups: ActivityGroup[];
 }
 
-export const _filter = (opt: string[], value: string): string[] => {
-  const filterValue = value.toLowerCase();
-
-  return opt.filter(item => item.toLowerCase().includes(filterValue));
-};
-
-
-
 @Component({
   selector: 'app-mainpage',
   standalone: true,
@@ -129,12 +121,21 @@ export class MainpageComponent implements OnInit {
     );
 }
 
-private _filterGroup(searchTerm: string | activityPair): ActivityGroup[] {  
+private _filterGroup(searchTerm: string | activityPair | null): ActivityGroup[] {  
     
     if (!searchTerm || typeof searchTerm !== 'string') {
         return this.activityGroups;
     }
     const filterValue = searchTerm.toLowerCase();
+    return this.activityGroups        
+      .map(group => ({
+        ...group,
+        types: group.types.filter(type => 
+          type.name.toLowerCase().includes(filterValue)
+        )        
+      }))      
+      .filter(group => group.types.length > 0);    
+    /* const filterValue = searchTerm.toLowerCase();
     return this.activityGroups        
         .map(group => ({
             categoryName: group.categoryName,
@@ -142,7 +143,7 @@ private _filterGroup(searchTerm: string | activityPair): ActivityGroup[] {
             types: group.types.filter(type => 
                 type.name.toLowerCase().includes(filterValue)
         )}))
-        .filter(group => group.types.length > 0);    
+        .filter(group => group.types.length > 0); */    
 }
 
   getLocation(): Promise<void> {

@@ -29,7 +29,7 @@ export class MapComponent implements OnInit, OnChanges {
 
   @Output() markerClick = new EventEmitter<Marker>();
 
-  private routingControl: any;
+  routingControl: any;
 
   constructor(private mapService: MapService) {}
 
@@ -68,7 +68,7 @@ export class MapComponent implements OnInit, OnChanges {
       }
     }
 
-    if (changes['markers'] && this.map) {      
+    if (changes['markers'] && this.map) {
       if (this.markerLayer) {
         this.map.removeLayer(this.markerLayer);
       }
@@ -76,26 +76,34 @@ export class MapComponent implements OnInit, OnChanges {
       if (this.markers.length > 0) {
         this.map.setView([this.latitude, this.longitude], this.zoom);
         this.map.setZoom(this.mapService.setMapZoom(this.markers.at(-1)!));
-      }    
+      }
     }
 
     if (changes['zoomlat']?.currentValue || changes['zoomlong']?.currentValue) {
       this.map.setView([this.zoomlat, this.zoomlong], 12);
     }
 
-    if (changes['destid'] && this.map) {        
-      this.destid === 0 ? this.newRouting() : this.updateRouteToMarker(this.destid);      
+    if (changes['destid'] && this.map) {
+      this.destid === 0
+        ? this.newRouting()
+        : this.updateRouteToMarker(this.destid);
     }
   }
 
-  newRouting(): void {
-    
-    if (this.routingControl) {
-      this.map.removeControl(this.routingControl);
-      this.map.closePopup();
-    }
-
+  newRouting() {
+    this.refreshRouting();
     this.routingControl = L.Routing.control({
+      routeWhileDragging: false,
+      show: false,
+      addWaypoints: false,
+      lineOptions: {
+        styles: [{ color: '#3388ff', weight: 5 }],
+        extendToWaypoints: false,
+        missingRouteTolerance: 0
+      },
+      waypointMode: 'snap'
+    }).addTo(this.map);
+    /* this.routingControl = L.Routing.control({
       waypoints: [],
       router: L.Routing.osrmv1({
         serviceUrl: 'https://router.project-osrm.org/route/v1',
@@ -110,34 +118,46 @@ export class MapComponent implements OnInit, OnChanges {
         missingRouteTolerance: 0,
       },
       waypointMode: 'snap',
-    }).addTo(this.map);
+    }).addTo(this.map); */
+  }
+
+  refreshRouting() {
+    if (this.routingControl) {
+      this.map.removeControl(this.routingControl);
+      this.map.closePopup();
+    }
   }
 
   addMarkers() {
     this.markerLayer = L.layerGroup();
     this.markers.forEach((markerData) => {
       const marker = L.marker([markerData.latitude, markerData.longitude])
-        .bindTooltip(markerData.toolText, { permanent: false, direction: 'top' })        
+        .bindTooltip(markerData.toolText, {
+          permanent: false,
+          direction: 'top',
+        })
         .on('click', () => {
-          this.markerClick.emit(markerData);          
+          this.markerClick.emit(markerData);
           marker.bindPopup(markerData.toolText).openPopup();
         });
       this.markerLayer.addLayer(marker);
     });
-
     this.markerLayer.addTo(this.map);
   }
 
-  updateRouteToMarker(id: number): void {    
-    const destmarker : Marker = this.markers.find((marker: Marker) => id === marker.id)!;    
+  updateRouteToMarker(id: number): void {
+    const destmarker: Marker = this.markers.find(
+      (marker: Marker) => id === marker.id
+    )!;
     const waypoints = [
       L.latLng(this.latitude, this.longitude),
       L.latLng(destmarker!.latitude, destmarker!.longitude),
     ];
-    this.routingControl.setWaypoints(waypoints).route();      
-    L.popup().setLatLng(new L.LatLng(destmarker.latitude, destmarker.longitude))
-    .setContent(destmarker.toolText)
-    .openOn(this.map);
+    this.routingControl.setWaypoints(waypoints).route();
+    L.popup()
+      .setLatLng(new L.LatLng(destmarker.latitude, destmarker.longitude))
+      .setContent(destmarker.toolText)
+      .openOn(this.map);
     this.map.setZoom(this.mapService.setMapZoom(destmarker));
   }
 
