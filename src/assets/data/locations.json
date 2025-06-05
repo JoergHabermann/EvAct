@@ -136,172 +136,19 @@
         {"name": "Aussichtspunkt", "value": "viewpoint"},
         {"name": "Zoo", "value": "zoo"},
         {"name": "Aquarium", "value": "aquarium"},
-        {"name": "Freizeitpark", "value": "theme_park"},
-        {"name": "Botanischer Garten", "value": "botanical_garden"},
-        {"name": "Campingplatz", "value": "camp_site"},
-        {"name": "Caravanstellplatz", "value": "caravan_site"},
-        {"name": "Gästehaus", "value": "guest_house"},
-        {"name": "Hostel", "value": "hostel"},         
-        {"name": "Wanderhütte", "value": "alpine_hut"},
-        {"name": "Touristenroute", "value": "route"},
-        {"name": "Führung", "value": "guidepost"}
+        {"name": "Freizeitpark", "value": "theme_park"},     
+        {"name": "Campingplatz", "value": "camp_site"}        
       ]
-    },
-    {
-      "categoryName": "Natur",
-      "categoryValue": "natural",
-      "types": [
-        {"name": "Strand", "value": "beach"},
-        {"name": "Höhle", "value": "cave_entrance"},
-        {"name": "Felsformation", "value": "rock"},        
-        {"name": "Berggipfel", "value": "peak"},
-        {"name": "Wald", "value": "wood"},        
-        {"name": "Quelle", "value": "spring"},
-        {"name": "Schlucht", "value": "gorge"},
-        {"name": "Düne", "value": "dune"},
-        {"name": "Geysir", "value": "geyser"},
-        {"name": "Vulkan", "value": "volcano"}
-      ]
-    },
-    {
-      "categoryName": "Historische Stätten",
-      "categoryValue": "historic",
-      "types": [
-        {"name": "Burg", "value": "castle"},
-        {"name": "Ruine", "value": "ruins"},
-        {"name": "Denkmal", "value": "monument"},
-        {"name": "Archäologische Stätte", "value": "archaeological_site"},
-        {"name": "Historisches Gebäude", "value": "building"}, 
-        {"name": "Schloss", "value": "manor"},
-        {"name": "Mühle", "value": "mill"},
-        {"name": "Wrack", "value": "wreck"},
-        {"name": "Gedenkstätte", "value": "memorial"}
-      ]
-    },
-    {
-      "categoryName": "Wasser",
-      "categoryValue": "waterway",
-      "types": [
-        {"name": "Fluss", "value": "river"},
-        {"name": "Wasserfall", "value": "waterfall"},
-        {"name": "Stromschnellen", "value": "rapids"},
-        {"name": "Hafenbecken", "value": "dock"},
-        {"name": "Staudamm", "value": "dam"}
-      ]
-    },
-    {
-      "categoryName": "Transport",
-      "categoryValue": "aeroway",
-      "types": [
-        {"name": "Flughafen", "value": "aerodrome"},
-        {"name": "Seilbahn", "value": "cable_car"},
-        {"name": "Flugplatz", "value": "airfield"}        
-      ]
-    },
-    {
-      "categoryName": "Einkaufen",
-      "categoryValue": "shop",
-      "types": [
-        {"name": "Einkaufszentrum", "value": "mall"},
-        {"name": "Markt", "value": "marketplace"},
-        {"name": "Boutique", "value": "clothes"},
-        {"name": "Sportgeschäft", "value": "sports"},
-        {"name": "Outdoorladen", "value": "outdoor"},
-        {"name": "Buchhandlung", "value": "books"},
-        {"name": "Souvenirladen", "value": "gift"}
-      ]
-    },
+    },    
     {
       "categoryName": "Kultur",
       "categoryValue": "culture",
       "types": [
         {"name": "Open-Air-Bühne", "value": "open_air_theatre"},
         {"name": "Festivalgelände", "value": "festival_site"},
-        {"name": "Skulptur", "value": "sculpture"},
-        {"name": "Kunstwerk", "value": "artwork"}
+        {"name": "Skulptur", "value": "sculpture"}        
       ]
-    },    
-    {
-      "categoryName": "Verkehr",
-      "categoryValue": "highway",
-      "types": [
-        {"name": "Bushaltestelle", "value": "bus_stop"},
-        {"name": "Bahnhof", "value": "station"},
-        {"name": "Tankstelle", "value": "fuel"},
-        {"name": "Parkplatz", "value": "parking"},
-        {"name": "Raststätte", "value": "services"},
-        {"name": "Rastplatz", "value": "rest_area"},
-        {"name": "Mautstelle", "value": "toll_booth"},
-        {"name": "Fähranleger", "value": "ferry_terminal"}
-      ]
-    },
-    {
-      "categoryName": "Luftfahrt",
-      "categoryValue": "aeroway",
-      "types": [
-        {"name": "Flughafen", "value": "aerodrome"},
-        {"name": "Terminal", "value": "terminal"},
-        {"name": "Startbahn", "value": "runway"},
-        {"name": "Hubschrauberlandeplatz", "value": "helipad"},
-        {"name": "Flugzeugstand", "value": "gate"}
-      ]
-    },
-    {
-      "categoryName": "Bahnverkehr",
-      "categoryValue": "railway",
-      "types": [
-        {"name": "Bahnstation", "value": "station"},
-        {"name": "Haltestelle", "value": "halt"},
-        {"name": "Tramhaltestelle", "value": "tram_stop"}        
-      ]
-    },
-    {
-      "categoryName": "Gesundheit",
-      "categoryValue": "healthcare",
-      "types": [        
-        {"name": "Klinik", "value": "clinic"},
-        {"name": "Arztpraxis", "value": "doctor"},
-        {"name": "Zahnarzt", "value": "dentist"},        
-        {"name": "Optiker", "value": "optometrist"},
-        {"name": "Gesundheitszentrum", "value": "centre"},
-        {"name": "Notaufnahme", "value": "emergency_ward"}
-      ]
-    },
-    {
-      "categoryName": "Bildung",
-      "categoryValue": "amenity",
-      "types": [
-        {"name": "Universität", "value": "university"},
-        {"name": "Kindergarten", "value": "kindergarten"},
-        {"name": "Bibliothek", "value": "library"},
-        {"name": "Forschungseinrichtung", "value": "research_institute"},
-        {"name": "Musikschule", "value": "music_school"},
-        {"name": "Fahrschule", "value": "driving_school"}
-      ]
-    },
-    {
-      "categoryName": "Öffentliche Dienste",
-      "categoryValue": "amenity",
-      "types": [
-        {"name": "Rathaus", "value": "townhall"},
-        {"name": "Postfiliale", "value": "post_office"},
-        {"name": "Polizei", "value": "police"},
-        {"name": "Feuerwehr", "value": "fire_station"},
-        {"name": "Gericht", "value": "courthouse"},
-        {"name": "Botschaft", "value": "embassy"},
-        {"name": "Toiletten", "value": "toilets"},
-        {"name": "Trinkbrunnen", "value": "drinking_water"}
-      ]
-    },
-    {
-      "categoryName": "Finanzen",
-      "categoryValue": "amenity",
-      "types": [
-        {"name": "Bank", "value": "bank"},
-        {"name": "Geldautomat", "value": "atm"},
-        {"name": "Wechselstube", "value": "bureau_de_change"}
-      ]
-    },
+    },      
     {
       "categoryName": "Religion",
       "categoryValue": "amenity",
@@ -311,127 +158,20 @@
         {"name": "Tempel", "value": "temple"},
         {"name": "Friedhof", "value": "grave_yard"}
       ]
-    },
-    {
-      "categoryName": "Versorgung",
-      "categoryValue": "man_made",
-      "types": [
-        {"name": "Wasserturm", "value": "water_tower"},
-        {"name": "Strommast", "value": "mast"},
-        {"name": "Windrad", "value": "windmill"},
-        {"name": "Transformatorenstation", "value": "transformer_tower"},
-        {"name": "Brunnen", "value": "water_well"}
-      ]
-    },
-    {
-      "categoryName": "Notdienste",
-      "categoryValue": "emergency",
-      "types": [
-        {"name": "Notrufsäule", "value": "phone"},
-        {"name": "Defibrillator", "value": "defibrillator"},
-        {"name": "Feuerlöscher", "value": "fire_extinguisher"},
-        {"name": "Rettungsstelle", "value": "ambulance_station"}
-      ]
-    },
+    },    
     {
       "categoryName": "Gebäude",
       "categoryValue": "building",
-      "types": [
-        {"name": "Wohnhaus", "value": "apartments"},
-        {"name": "Bürogebäude", "value": "office"},
-        {"name": "Handelsgebäude", "value": "commercial"},
-        {"name": "Industriegebäude", "value": "industrial"},
-        {"name": "Kirche", "value": "church"},
-        {"name": "Schule", "value": "school"},
-        {"name": "Krankenhaus", "value": "hospital"},
-        {"name": "Hotel", "value": "hotel"},
-        {"name": "Historisches Gebäude", "value": "historic"}
+      "types": [       
+        {"name": "Kirche", "value": "church"}              
       ]
-    },
-    {
-      "categoryName": "Einkaufen",
-      "categoryValue": "shop",
-      "types": [
-        {"name": "Supermarkt", "value": "supermarket"},
-        {"name": "Bäckerei", "value": "bakery"},
-        {"name": "Metzgerei", "value": "butcher"},
-        {"name": "Lebensmittelgeschäft", "value": "convenience"},
-        {"name": "Apotheke", "value": "pharmacy"},
-        {"name": "Elektronikgeschäft", "value": "electronics"},
-        {"name": "Baumarkt", "value": "hardware"},
-        {"name": "Bekleidungsgeschäft", "value": "clothes"},
-        {"name": "Schuhgeschäft", "value": "shoes"},
-        {"name": "Möbelgeschäft", "value": "furniture"},
-        {"name": "Buchhandlung", "value": "books"},
-        {"name": "Blumenladen", "value": "florist"},
-        {"name": "Kiosk", "value": "kiosk"},
-        {"name": "Einkaufszentrum", "value": "mall"}
-      ]
-    },    
-    {
-      "categoryName": "Gewässer",
-      "categoryValue": "water",
-      "types": [
-        {"name": "See", "value": "lake"},
-        {"name": "Teich", "value": "pond"},
-        {"name": "Stausee", "value": "reservoir"}        
-      ]
-    },
-    {
-      "categoryName": "Büros",
-      "categoryValue": "office",
-      "types": [
-        {"name": "Versicherung", "value": "insurance"},
-        {"name": "Rechtsanwalt", "value": "lawyer"},
-        {"name": "Reisebüro", "value": "travel_agent"}        
-      ]
-    },
-    {
-      "categoryName": "Touristische Infrastruktur",
-      "categoryValue": "tourism",
-      "types": [
-        {"name": "Informationstafel", "value": "information"},
-        {"name": "Karte", "value": "map"},
-        {"name": "Fremdenführer", "value": "guidepost"},
-        {"name": "Übernachtungsmöglichkeit", "value": "guest_house"},
-        {"name": "Jugendherberge", "value": "hostel"},
-        {"name": "Ferienwohnung", "value": "apartment"}
-      ]
-    },                
-    {
-      "categoryName": "Öffentlicher Nahverkehr",
-      "categoryValue": "public_transport",
-      "types": [
-        {"name": "Haltestelle", "value": "stop_position"},
-        {"name": "Station", "value": "station"},        
-        {"name": "Ticketautomat", "value": "ticket_machine"}
-      ]
-    },    
-    {
-      "categoryName": "Grenzen",
-      "categoryValue": "boundary",
-      "types": [
-        {"name": "Nationalpark", "value": "national_park"},
-        {"name": "Schutzgebiet", "value": "protected_area"}        
-      ]
-    },    
-    {
-      "categoryName": "Handwerk",
-      "categoryValue": "craft",
-      "types": [
-        {"name": "Bäckerei", "value": "bakery"},
-        {"name": "Schneiderei", "value": "tailor"},
-        {"name": "Tischlerei", "value": "carpenter"},
-        {"name": "Brennerei", "value": "distillery"}
-      ]
-    },
+    },      
     {
       "categoryName": "Sehenswürdigkeiten",
       "categoryValue": "tourism",
       "types": [
         {"name": "Museum", "value": "museum"},
-        {"name": "Galerie", "value": "gallery"},       
-        {"name": "Historische Stätte", "value": "archaeological_site"}
+        {"name": "Galerie", "value": "gallery"}       
       ]
     }     
   ]

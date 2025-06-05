@@ -39,11 +39,7 @@ export class MapComponent implements OnInit, OnChanges {
   zoom: number = 13;
 
   ngOnInit(): void {
-    const customIcon = L.divIcon({
-      html: '<div style="background: green; width: 20px; height: 20px; border-radius: 50%;"></div>',
-      className: '',
-      iconSize: [20, 20],
-    });
+    const customIcon = this.setCustomIcon();
     this.map = L.map('map').setView([this.latitude, this.longitude], this.zoom);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
@@ -53,21 +49,39 @@ export class MapComponent implements OnInit, OnChanges {
     this.position_marker = L.marker([this.latitude, this.longitude], {
       icon: customIcon,
     })
-      .addTo(this.map)
-      .bindPopup('Du befindes Dich hier')
-      .openPopup();
+      .addTo(this.map).bindPopup('Du befindes Dich hier').openPopup();
     this.addMarkers();
     this.newRouting();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  setCustomIcon() {
+    return L.divIcon({
+      html: '<div style="background: green; width: 20px; height: 20px; border-radius: 50%;"></div>',
+      className: '',
+      iconSize: [20, 20],
+    });
+  }
+
+
+  ngOnChanges(changes: SimpleChanges) {
     if (changes['latitude'] || changes['longitude']) {
       if (this.map) {
         this.map.setView([this.latitude, this.longitude], this.zoom);
         this.position_marker.setLatLng([this.latitude, this.longitude]);
       }
     }
+    this.markerChanges(changes);
+    if (changes['zoomlat']?.currentValue || changes['zoomlong']?.currentValue) {
+      this.map.setView([this.zoomlat, this.zoomlong], 12);
+    }
+    if (changes['destid'] && this.map) {
+      this.destid === 0
+        ? this.newRouting()
+        : this.updateRouteToMarker(this.destid);
+    }
+  }
 
+  markerChanges(changes: SimpleChanges) {
     if (changes['markers'] && this.map) {
       if (this.markerLayer) {
         this.map.removeLayer(this.markerLayer);
@@ -77,16 +91,6 @@ export class MapComponent implements OnInit, OnChanges {
         this.map.setView([this.latitude, this.longitude], this.zoom);
         this.map.setZoom(this.mapService.setMapZoom(this.markers.at(-1)!));
       }
-    }
-
-    if (changes['zoomlat']?.currentValue || changes['zoomlong']?.currentValue) {
-      this.map.setView([this.zoomlat, this.zoomlong], 12);
-    }
-
-    if (changes['destid'] && this.map) {
-      this.destid === 0
-        ? this.newRouting()
-        : this.updateRouteToMarker(this.destid);
     }
   }
 
@@ -102,23 +106,7 @@ export class MapComponent implements OnInit, OnChanges {
         missingRouteTolerance: 0
       },
       waypointMode: 'snap'
-    }).addTo(this.map);
-    /* this.routingControl = L.Routing.control({
-      waypoints: [],
-      router: L.Routing.osrmv1({
-        serviceUrl: 'https://router.project-osrm.org/route/v1',
-      }),
-      routeWhileDragging: false,
-      show: false,
-      collapsible: true,
-      addWaypoints: false,
-      lineOptions: {
-        styles: [{ color: '#3388ff', weight: 5 }],
-        extendToWaypoints: false,
-        missingRouteTolerance: 0,
-      },
-      waypointMode: 'snap',
-    }).addTo(this.map); */
+    }).addTo(this.map);    
   }
 
   refreshRouting() {

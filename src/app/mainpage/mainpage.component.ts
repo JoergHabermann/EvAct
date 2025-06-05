@@ -71,17 +71,8 @@ export interface ActivitiesData {
 })
 
 export class MainpageComponent implements OnInit {
-  private _formBuilder = inject(FormBuilder);
-
-  activityForm = this._formBuilder.group({
-    activityGroup: '',
-  })
-
-  
-
   activityGroupOptions: Observable<ActivityGroup[]> = of([]);
-  
-  readonly panelOpenState = signal(false);
+  activityGroups = {} as ActivityGroup[];
   
   activityData : any;  
   userLatitude : number = 0;
@@ -95,9 +86,7 @@ export class MainpageComponent implements OnInit {
   selectedMarker = {} as Node;
   selectedRoute : number = 0;
   result : boolean = false;
-  noResult : boolean = false;
-
-  activityGroups = {} as ActivityGroup[];
+  noResult : boolean = false;  
  
   dataForm = new FormGroup({
     rangeValue: new FormControl(25),
@@ -116,35 +105,26 @@ export class MainpageComponent implements OnInit {
     this.activityGroups = (data as any).activityGroups as ActivityGroup[];      
     this.activityGroupOptions = this.dataForm.get('activityGroup')!.valueChanges.pipe(
       startWith(''), 
-      map(searchTerm => this._filterGroup(searchTerm || '')),
-      startWith(this.activityGroups) 
+      map(searchTerm => this.filterGroup(searchTerm || ''))
     );
 }
 
-private _filterGroup(searchTerm: string | activityPair | null): ActivityGroup[] {  
-    
+  private filterGroup(searchTerm: string | activityPair | null): ActivityGroup[] {     
     if (!searchTerm || typeof searchTerm !== 'string') {
-        return this.activityGroups;
+      return this.activityGroups;
     }
     const filterValue = searchTerm.toLowerCase();
     return this.activityGroups        
       .map(group => ({
         ...group,
         types: group.types.filter(type => 
-          type.name.toLowerCase().includes(filterValue)
+          type.name.toLowerCase().startsWith(filterValue)
         )        
       }))      
-      .filter(group => group.types.length > 0);    
-    /* const filterValue = searchTerm.toLowerCase();
-    return this.activityGroups        
-        .map(group => ({
-            categoryName: group.categoryName,
-            categoryValue: group.categoryValue,
-            types: group.types.filter(type => 
-                type.name.toLowerCase().includes(filterValue)
-        )}))
-        .filter(group => group.types.length > 0); */    
-}
+      .filter(group => group.types.length > 0);        
+  } 
+
+
 
   getLocation(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -158,8 +138,7 @@ private _filterGroup(searchTerm: string | activityPair | null): ActivityGroup[] 
           (error) => {
             console.error('Fehler bei der Geolokalisierung:', error);
             reject(error);
-          }
-        );
+          });
       } else {
         reject('Geolokalisierung wird nicht unterstützt.');
       }
@@ -210,8 +189,6 @@ private _filterGroup(searchTerm: string | activityPair | null): ActivityGroup[] 
     this.mapMarkers = [...this.mapMarkers];  
   }
   
-    
-
   deleteRedundantNodes(object : Object[]) {
     const halfLength = object.length / 2;
     return object.slice(0,halfLength - 1);
@@ -251,7 +228,6 @@ private _filterGroup(searchTerm: string | activityPair | null): ActivityGroup[] 
     let actName : string = userInput;  
     let actCategory : string = '';  
     actName = actName.charAt(0).toUpperCase() + actName.toLowerCase().slice(1);
-    
     this.activityGroups.forEach(category => {
       const foundCategory = category.types.find(type => type.name === actName);
       if (foundCategory) {
@@ -279,9 +255,13 @@ private _filterGroup(searchTerm: string | activityPair | null): ActivityGroup[] 
     return '';
   }
 
+  filterOptions(option: { name: string; category: any }, query: string): boolean {  
+    return option.name.toLowerCase().includes(query.trim().toLowerCase());
+  }
+
   displayActivityName (type : activityPair): string {
     return type ? type.name : '';
-  }
+  } 
 
   formatLabel(value: number): string {
     return value + 'km';
