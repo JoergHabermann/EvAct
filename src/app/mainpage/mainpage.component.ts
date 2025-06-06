@@ -99,6 +99,9 @@ export class MainpageComponent implements OnInit {
   
   constructor(private geoService: GeoInformationService, private mapService: MapService){} 
 
+  /**
+   * Locates the user. Defines location.json as ActivityGroup and observes changes in input
+   */
   async ngOnInit() {    
     await this.getLocation();    
     this.userCity = await this.geoService.getAddress(this.userLatitude, this.userLongitude);       
@@ -107,8 +110,13 @@ export class MainpageComponent implements OnInit {
       startWith(''), 
       map(searchTerm => this.filterGroup(searchTerm || ''))
     );
-}
+  }
 
+  /**
+   * Filterfunktion to search terms in autocomplete preview
+   * 
+   * @param searchTerm - input from user
+   */
   private filterGroup(searchTerm: string | activityPair | null): ActivityGroup[] {     
     if (!searchTerm || typeof searchTerm !== 'string') {
       return this.activityGroups;
@@ -124,8 +132,9 @@ export class MainpageComponent implements OnInit {
       .filter(group => group.types.length > 0);        
   } 
 
-
-
+  /**
+   * Defines user position using browser geolocation
+   */
   getLocation(): Promise<void> {
     return new Promise((resolve, reject) => {
       if (navigator.geolocation) {
@@ -145,7 +154,15 @@ export class MainpageComponent implements OnInit {
     });
   }  
   
-
+  /**
+   * API request with necessary data. cleaning and sorting data, adding haversine distance
+   * 
+   * @param latitude - user latitude
+   * @param longitude - user longitude
+   * @param range - range-data from form
+   * @param type - requestet activity
+   * @param category - category of requestet activity 
+   */
   async fetchData(latitude : number, longitude : number, range : number, type : string, category: string) {    
     const query = `
       [out:json];(
@@ -162,6 +179,11 @@ export class MainpageComponent implements OnInit {
     this.sortLocations(this.locationData);
   }
 
+  /**
+   * Getting and pushing location adress information from nominatim api if adress data is missing
+   * 
+   * @param node - node to check address on
+   */
   async pushNominatim(node : Node) {      
     const mapElements = ["road", "house_number", "postcode", "town", "suburb"];
     if (!node.hasOwnProperty("road")) {
@@ -174,6 +196,9 @@ export class MainpageComponent implements OnInit {
     }  
   }
 
+  /**
+   * clearing markers and creating nodes for markerdata from the API-Data
+   */
   pushMarkers() {    
     this.mapMarkers = []; 
     for (const node of this.locationData) {
@@ -189,11 +214,23 @@ export class MainpageComponent implements OnInit {
     this.mapMarkers = [...this.mapMarkers];  
   }
   
+  /**
+   * Getting rid of redundant node data
+   * 
+   * @param object - api data as object
+   */
   deleteRedundantNodes(object : Object[]) {
     const halfLength = object.length / 2;
     return object.slice(0,halfLength - 1);
   }
 
+  /**
+   * adding distance information haversine distance information from map service
+   * 
+   * @param latitude - user latitude
+   * @param longitude - user longitude
+   * @param object - api data as object
+   */
   addLocationDistance(latitude : number, longitude : number, object : Node[]) {
     for (let location of object) {
       const distance =       
@@ -202,10 +239,18 @@ export class MainpageComponent implements OnInit {
     }
   }
 
+  /**
+   * sorting the nodes of the api data
+   * 
+   * @param object - api data object as Nodes
+   */
   sortLocations(object : Node[]) {
     object.sort((a, b) => (a.distance < b.distance ? -1 : 1))
   }  
 
+  /**
+   * main function to request searchterm getting form data, validating input   
+   */
   async logData() {     
     this.activityTwin = {} as activityPair;
     this.selectedRoute = 0;    
@@ -224,6 +269,11 @@ export class MainpageComponent implements OnInit {
     this.checkResult();     
   }
 
+  /**
+   * used to get activity type and category from user input
+   * 
+   * @param userInput - user input 
+   */
   searchByTyping(userInput : string) : activityPair {        
     let actName : string = userInput;  
     let actCategory : string = '';  
@@ -237,6 +287,9 @@ export class MainpageComponent implements OnInit {
     return {name: actName,category: actCategory};
   } 
 
+  /**
+   * helper function to activate result template
+   */
   checkResult() {
     this.locationData.length ? this.noResult = false : this.noResult = true;
     if (this.locationData.length) {        
@@ -245,6 +298,11 @@ export class MainpageComponent implements OnInit {
     }
   }
 
+  /**
+   * searching for matching activity type from user input
+   * 
+   * @param key - user input
+   */
   findActivityValue(key : string) : string {
     for (const group of this.activityGroups) {
       const foundType = group.types.find(type => type.name === key);
@@ -255,36 +313,57 @@ export class MainpageComponent implements OnInit {
     return '';
   }
 
-  filterOptions(option: { name: string; category: any }, query: string): boolean {  
-    return option.name.toLowerCase().includes(query.trim().toLowerCase());
-  }
-
+  /**
+   * displaying activity type in autocomplete view
+   */
   displayActivityName (type : activityPair): string {
     return type ? type.name : '';
   } 
 
+  /**
+   * adding km string to distance value
+   * 
+   * @param value - calculated distance
+   */
   formatLabel(value: number): string {
     return value + 'km';
   }  
 
+  /**
+   * transfer node data to zoom variables
+   * 
+   * @param nodelat - latitude of the node
+   * @param nodelong - longitude of the node
+   */
   sendZoomCoords(nodelat : number, nodelong : number) {    
     this.zoomlat = nodelat;
     this.zoomlong = nodelong;
   }
 
+  /**
+   * setting the route to the found node from location data
+   * 
+   * @param Marker - marker clicked by user
+   */
   handleMarkerClick(Marker: Marker) {
     this.selectedMarker = this.locationData.find( (node : Node) =>
       node.id === Marker.id);
     this.setRoute(Marker.id);
   }
 
+   /**
+   * setting selected route to selected id
+   * 
+   * @param id - id of the destination marker
+   */
   setRoute(id : number) {
     this.selectedRoute = id;
   }
 
+/**
+   * switching the result panel on and off via ternary
+   */
   switchResultPanel() {
     this.result ? this.result = false : this.result = true;
   }
 }
-
-

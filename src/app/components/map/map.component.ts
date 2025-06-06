@@ -38,7 +38,10 @@ export class MapComponent implements OnInit, OnChanges {
   markerLayer: any;
   zoom: number = 13;
 
-  ngOnInit(): void {
+  /**
+   * Initializes the Leaflet map, markers, and Routing Plug-In
+   */
+  ngOnInit() {
     const customIcon = this.setCustomIcon();
     this.map = L.map('map').setView([this.latitude, this.longitude], this.zoom);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -54,6 +57,9 @@ export class MapComponent implements OnInit, OnChanges {
     this.newRouting();
   }
 
+  /**
+   * Defines custom icon for user position
+   */
   setCustomIcon() {
     return L.divIcon({
       html: '<div style="background: green; width: 20px; height: 20px; border-radius: 50%;"></div>',
@@ -62,7 +68,11 @@ export class MapComponent implements OnInit, OnChanges {
     });
   }
 
-
+  /**
+   * Observes changes of markers, zoomcoordinates and routingdestination
+   * 
+   * @param changes - tracking SimpleChanges of specific values
+   */
   ngOnChanges(changes: SimpleChanges) {
     if (changes['latitude'] || changes['longitude']) {
       if (this.map) {
@@ -81,6 +91,11 @@ export class MapComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Observes changes of markers
+   * 
+   * @param changes - tracking SimpleChanges of markers
+   */
   markerChanges(changes: SimpleChanges) {
     if (changes['markers'] && this.map) {
       if (this.markerLayer) {
@@ -94,6 +109,9 @@ export class MapComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Reinitializes Routing Plug-In
+   */
   newRouting() {
     this.refreshRouting();
     this.routingControl = L.Routing.control({
@@ -109,6 +127,9 @@ export class MapComponent implements OnInit, OnChanges {
     }).addTo(this.map);    
   }
 
+  /**
+   * Removes RoutingControl
+   */
   refreshRouting() {
     if (this.routingControl) {
       this.map.removeControl(this.routingControl);
@@ -116,6 +137,9 @@ export class MapComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Adds marker-layer-group, binds popups, and emits markerData on click
+   */
   addMarkers() {
     this.markerLayer = L.layerGroup();
     this.markers.forEach((markerData) => {
@@ -133,6 +157,11 @@ export class MapComponent implements OnInit, OnChanges {
     this.markerLayer.addTo(this.map);
   }
 
+  /**
+   * Updates route to new markerid
+   * 
+   * @param id - markerid of the routing destination
+   */
   updateRouteToMarker(id: number): void {
     const destmarker: Marker = this.markers.find(
       (marker: Marker) => id === marker.id
@@ -149,6 +178,9 @@ export class MapComponent implements OnInit, OnChanges {
     this.map.setZoom(this.mapService.setMapZoom(destmarker));
   }
 
+  /**
+   * End of Lifecycle-Hook, removes RoutingControl
+   */
   ngOnDestroy() {
     if (this.routingControl) {
       this.map.removeControl(this.routingControl);
