@@ -33,9 +33,19 @@ mat-icon {
   transform: scale(120%);
 }
 
+mat-expansion-panel-header {
+  span:first-child {
+    @include flexParams($direction: column)
+  }
+}
+
 .autocomplete-wrapper {
   position: relative;
   width: 280px;
+}
+
+.center-column {
+  @include flexParams($direction: column);
 }
 
 .search-button-container {
@@ -53,8 +63,7 @@ mat-icon {
 }
 
 .node-card {
-  @include flexParams($align: center,$justify: space-between,$direction: row);
-  
+  @include flexParams($align: center,$justify: space-between,$direction: row);  
 }
 
 form {

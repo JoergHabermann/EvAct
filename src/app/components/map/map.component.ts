@@ -10,7 +10,12 @@ import {
 import { Marker } from '../../models/marker.model';
 import { MapService } from '../../services/map.service';
 import * as L from 'leaflet';
-import 'leaflet-routing-machine';
+
+declare module 'leaflet' {
+  namespace Routing {
+    function control(options: any): any;
+  }
+}
 
 @Component({
   selector: 'app-map',
@@ -30,18 +35,19 @@ export class MapComponent implements OnInit, OnChanges {
   @Output() markerClick = new EventEmitter<Marker>();
 
   routingControl: any;
+  LRM: any;
 
   constructor(private mapService: MapService) {}
 
   map: any;
   position_marker: any;
   markerLayer: any;
-  zoom: number = 13;
+  zoom: number = 13;  
 
   /**
    * Initializes the Leaflet map, markers, and Routing Plug-In
    */
-  ngOnInit() {
+  async ngOnInit() {    
     const customIcon = this.setCustomIcon();
     this.map = L.map('map').setView([this.latitude, this.longitude], this.zoom);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -54,7 +60,32 @@ export class MapComponent implements OnInit, OnChanges {
     })
       .addTo(this.map).bindPopup('Du befindes Dich hier').openPopup();
     this.addMarkers();
-    this.newRouting();
+    this.importPlugin();    
+  }
+
+  /**
+   * Redirect URL Paths for Marker ICON in Leaflet to local directory avoiding CDN
+   */
+  fixLeafletIcon() {    
+    delete (L.Icon.Default.prototype as any)._getIconUrl;    
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: `/assets/img/marker-icon-2x.png`,
+      iconUrl: `/assets/img/marker-icon.png`,
+      shadowUrl: `/assets/img/marker-shadow.png`,
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+  }
+
+  /**
+   * Handles correct implementation of LRM Plug-In
+   */
+  async importPlugin() {
+    (window as any).L = L;
+    await import('leaflet-routing-machine');
+    this.newRouting();    
   }
 
   /**
@@ -62,7 +93,7 @@ export class MapComponent implements OnInit, OnChanges {
    */
   setCustomIcon() {
     return L.divIcon({
-      html: '<div style="background: green; width: 20px; height: 20px; border-radius: 50%;"></div>',
+      html: '<div style="background: #673AB7; width: 20px; height: 20px; border-radius: 50%;"></div>',
       className: '',
       iconSize: [20, 20],
     });
@@ -113,17 +144,33 @@ export class MapComponent implements OnInit, OnChanges {
    * Reinitializes Routing Plug-In
    */
   newRouting() {
-    this.refreshRouting();
+    this.refreshRouting();    
     this.routingControl = L.Routing.control({
-      routeWhileDragging: false,
-      show: false,
+      routeWhileDragging: false,      
+      show: true,
       addWaypoints: false,
+      summaryTemplate: '<p><b>Über: {name}</b><br>Distanz: {distance} | Zeit: {time}<p>',
+      language: 'de',
       lineOptions: {
         styles: [{ color: '#3388ff', weight: 5 }],
-        extendToWaypoints: false,
+        extendToWaypoints: true,
         missingRouteTolerance: 0
       },
-      waypointMode: 'snap'
+      createMarker: function(i: number, waypoint: any) {
+        return L.marker(waypoint.latLng, {
+          icon: new L.Icon({
+            iconUrl: '/assets/img/marker-icon.png',
+            iconRetinaUrl: '/assets/img/marker-icon-2x.png',
+            shadowUrl: '/assets/img/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            shadowSize: [41, 41],
+            shadowAnchor: [12, 41],
+            popupAnchor: [1, -34]
+          })
+        });
+      },
+      waypointMode: 'snap'      
     }).addTo(this.map);    
   }
 
@@ -143,7 +190,11 @@ export class MapComponent implements OnInit, OnChanges {
   addMarkers() {
     this.markerLayer = L.layerGroup();
     this.markers.forEach((markerData) => {
-      const marker = L.marker([markerData.latitude, markerData.longitude])
+      const marker = L.marker([markerData.latitude, markerData.longitude],
+      {
+      icon: this.markerIcon(),
+      }
+      )
         .bindTooltip(markerData.toolText, {
           permanent: false,
           direction: 'top',
@@ -155,6 +206,24 @@ export class MapComponent implements OnInit, OnChanges {
       this.markerLayer.addLayer(marker);
     });
     this.markerLayer.addTo(this.map);
+  }
+
+  /**
+   * Creates custom icon for markers
+   * 
+   * @returns Instance of new icon Creation
+   */
+  markerIcon() {
+    return new L.Icon({
+      iconUrl: '/assets/img/marker-icon.png',
+      iconRetinaUrl: '/assets/img/marker-icon-2x.png',
+      shadowUrl: '/assets/img/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      shadowSize: [41, 41],
+      shadowAnchor: [12, 41],
+      popupAnchor: [1, -34]
+    })
   }
 
   /**
